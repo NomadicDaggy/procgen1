@@ -1,0 +1,88 @@
+[gd_scene load_steps=7 format=3 uid="uid://bg8vu4vo2pjsk"]
+
+[ext_resource type="Texture2D" uid="uid://x6fee8su30kj" path="res://assets/ts1.png" id="1_5lnke"]
+[ext_resource type="Script" path="res://scripts/map.gd" id="2_6xld6"]
+[ext_resource type="PackedScene" uid="uid://cbjk1vccn32a4" path="res://scenes/player.tscn" id="3_m2xfy"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_mpvrb"]
+texture = ExtResource("1_5lnke")
+0:0/0 = 0
+0:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+0:0/0/physics_layer_0/angular_velocity = 0.0
+1:0/0 = 0
+1:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+1:0/0/physics_layer_0/angular_velocity = 0.0
+2:0/0 = 0
+2:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+2:0/0/physics_layer_0/angular_velocity = 0.0
+2:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+3:0/0 = 0
+3:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+3:0/0/physics_layer_0/angular_velocity = 0.0
+0:1/0 = 0
+0:1/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+0:1/0/physics_layer_0/angular_velocity = 0.0
+1:1/0 = 0
+1:1/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+1:1/0/physics_layer_0/angular_velocity = 0.0
+2:1/0 = 0
+2:1/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+2:1/0/physics_layer_0/angular_velocity = 0.0
+3:1/0 = 0
+3:1/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+3:1/0/physics_layer_0/angular_velocity = 0.0
+0:2/0 = 0
+0:2/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+0:2/0/physics_layer_0/angular_velocity = 0.0
+1:2/0 = 0
+1:2/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+1:2/0/physics_layer_0/angular_velocity = 0.0
+2:2/0 = 0
+2:2/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+2:2/0/physics_layer_0/angular_velocity = 0.0
+3:2/0 = 0
+3:2/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+3:2/0/physics_layer_0/angular_velocity = 0.0
+0:3/0 = 0
+0:3/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+0:3/0/physics_layer_0/angular_velocity = 0.0
+
+[sub_resource type="TileSet" id="TileSet_glrd7"]
+physics_layer_0/collision_layer = 1
+sources/0 = SubResource("TileSetAtlasSource_mpvrb")
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_0ncgd"]
+size = Vector2(144, 132)
+
+[node name="world" type="Node2D"]
+
+[node name="Map" type="TileMap" parent="."]
+tile_set = SubResource("TileSet_glrd7")
+format = 2
+layer_0/name = "background"
+layer_1/name = "mid"
+layer_1/z_index = 10
+layer_1/tile_data = PackedInt32Array()
+script = ExtResource("2_6xld6")
+
+[node name="Buildings" type="Node" parent="Map"]
+
+[node name="Area2D" type="Area2D" parent="Map"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Map/Area2D"]
+shape = SubResource("RectangleShape2D_0ncgd")
+debug_color = Color(0, 0.6, 0.701961, 0.419608)
+
+[node name="Player" parent="." instance=ExtResource("3_m2xfy")]
+z_index = 1000
+
+[node name="Camera2D" type="Camera2D" parent="Player"]
+zoom = Vector2(1.54, 1.54)
+position_smoothing_speed = 1e+06
+rotation_smoothing_speed = 2.0
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Debug" type="Label" parent="CanvasLayer"]
+offset_right = 40.0
+offset_bottom = 23.0
