@@ -1,8 +1,11 @@
-[gd_scene load_steps=7 format=3 uid="uid://bg8vu4vo2pjsk"]
+[gd_scene load_steps=8 format=3 uid="uid://bg8vu4vo2pjsk"]
 
 [ext_resource type="Texture2D" uid="uid://x6fee8su30kj" path="res://assets/ts1.png" id="1_5lnke"]
 [ext_resource type="Script" path="res://scripts/map.gd" id="2_6xld6"]
 [ext_resource type="PackedScene" uid="uid://cbjk1vccn32a4" path="res://scenes/player.tscn" id="3_m2xfy"]
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_t4wgn"]
+polygon = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_mpvrb"]
 texture = ExtResource("1_5lnke")
@@ -13,6 +16,7 @@ texture = ExtResource("1_5lnke")
 1:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 1:0/0/physics_layer_0/angular_velocity = 0.0
 2:0/0 = 0
+2:0/0/occlusion_layer_0/polygon = SubResource("OccluderPolygon2D_t4wgn")
 2:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 2:0/0/physics_layer_0/angular_velocity = 0.0
 2:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
@@ -48,6 +52,7 @@ texture = ExtResource("1_5lnke")
 0:3/0/physics_layer_0/angular_velocity = 0.0
 
 [sub_resource type="TileSet" id="TileSet_glrd7"]
+occlusion_layer_0/light_mask = 1
 physics_layer_0/collision_layer = 1
 sources/0 = SubResource("TileSetAtlasSource_mpvrb")
 
@@ -77,7 +82,7 @@ debug_color = Color(0, 0.6, 0.701961, 0.419608)
 z_index = 1000
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
-zoom = Vector2(1.54, 1.54)
+zoom = Vector2(2.94, 2.94)
 position_smoothing_speed = 1e+06
 rotation_smoothing_speed = 2.0
 
@@ -86,3 +91,6 @@ rotation_smoothing_speed = 2.0
 [node name="Debug" type="Label" parent="CanvasLayer"]
 offset_right = 40.0
 offset_bottom = 23.0
+
+[node name="CanvasModulate" type="CanvasModulate" parent="."]
+color = Color(0, 0, 0, 1)
