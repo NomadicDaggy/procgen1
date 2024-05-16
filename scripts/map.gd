@@ -34,7 +34,8 @@ func _ready():
 
 
 func _process(delta):
-	debug.text = str(get_global_mouse_position())
+	# debug.text = str(get_global_mouse_position())
+	pass
 
 
 func build_room(width: int, height:int, offset: Vector2i):
@@ -56,7 +57,6 @@ func build_room(width: int, height:int, offset: Vector2i):
 			continue
 
 		if areas_overlap(building, area):
-			print("overlap")
 			area.queue_free()
 			return
 	

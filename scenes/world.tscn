@@ -1,8 +1,9 @@
-[gd_scene load_steps=8 format=3 uid="uid://bg8vu4vo2pjsk"]
+[gd_scene load_steps=9 format=3 uid="uid://bg8vu4vo2pjsk"]
 
 [ext_resource type="Texture2D" uid="uid://x6fee8su30kj" path="res://assets/ts1.png" id="1_5lnke"]
 [ext_resource type="Script" path="res://scripts/map.gd" id="2_6xld6"]
 [ext_resource type="PackedScene" uid="uid://cbjk1vccn32a4" path="res://scenes/player.tscn" id="3_m2xfy"]
+[ext_resource type="PackedScene" uid="uid://cnvaqhi8co16a" path="res://scenes/enemy.tscn" id="4_ek42g"]
 
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_t4wgn"]
 polygon = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
@@ -94,3 +95,6 @@ offset_bottom = 23.0
 
 [node name="CanvasModulate" type="CanvasModulate" parent="."]
 color = Color(0, 0, 0, 1)
+
+[node name="Enemy" parent="." instance=ExtResource("4_ek42g")]
+position = Vector2(53, -51)
