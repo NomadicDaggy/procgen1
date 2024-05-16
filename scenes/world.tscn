@@ -1,9 +1,16 @@
-[gd_scene load_steps=9 format=3 uid="uid://bg8vu4vo2pjsk"]
+[gd_scene load_steps=11 format=3 uid="uid://bg8vu4vo2pjsk"]
 
 [ext_resource type="Texture2D" uid="uid://x6fee8su30kj" path="res://assets/ts1.png" id="1_5lnke"]
 [ext_resource type="Script" path="res://scripts/map.gd" id="2_6xld6"]
 [ext_resource type="PackedScene" uid="uid://cbjk1vccn32a4" path="res://scenes/player.tscn" id="3_m2xfy"]
 [ext_resource type="PackedScene" uid="uid://cnvaqhi8co16a" path="res://scenes/enemy.tscn" id="4_ek42g"]
+[ext_resource type="Script" path="res://scripts/ui.gd" id="4_q5nlr"]
+
+[sub_resource type="NavigationPolygon" id="NavigationPolygon_y1ok5"]
+vertices = PackedVector2Array(81, -13, 81, -49, 2850, -1629, 2948, 2260, -2070, 1792, 29, -13, -2370, -1635, 13, -29, 65, -49, 65, -65, 29, -29, 13, -65)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3), PackedInt32Array(0, 3, 4, 5), PackedInt32Array(5, 4, 6, 7), PackedInt32Array(1, 8, 9, 2), PackedInt32Array(7, 10, 5), PackedInt32Array(11, 7, 6), PackedInt32Array(11, 6, 2, 9)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(-2381, -1646, 2860, -1639, 2959, 2272, -2080, 1802)])
+source_geometry_group_name = &"navigation_polygon_source_group"
 
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_t4wgn"]
 polygon = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
@@ -54,7 +61,8 @@ texture = ExtResource("1_5lnke")
 
 [sub_resource type="TileSet" id="TileSet_glrd7"]
 occlusion_layer_0/light_mask = 1
-physics_layer_0/collision_layer = 1
+physics_layer_0/collision_layer = 7
+physics_layer_0/collision_mask = 7
 sources/0 = SubResource("TileSetAtlasSource_mpvrb")
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_0ncgd"]
@@ -62,20 +70,27 @@ size = Vector2(144, 132)
 
 [node name="world" type="Node2D"]
 
-[node name="Map" type="TileMap" parent="."]
+[node name="NavigationRegion2D" type="NavigationRegion2D" parent="."]
+position = Vector2(-7, 7)
+navigation_polygon = SubResource("NavigationPolygon_y1ok5")
+
+[node name="Map" type="TileMap" parent="NavigationRegion2D" node_paths=PackedStringArray("navigation_region")]
+position = Vector2(7, -7)
 tile_set = SubResource("TileSet_glrd7")
 format = 2
 layer_0/name = "background"
+layer_0/tile_data = PackedInt32Array(-196607, 131072, 0, -196606, 131072, 0, -131070, 131072, 0, -131069, 131072, 0)
 layer_1/name = "mid"
 layer_1/z_index = 10
 layer_1/tile_data = PackedInt32Array()
 script = ExtResource("2_6xld6")
+navigation_region = NodePath("..")
 
-[node name="Buildings" type="Node" parent="Map"]
+[node name="Buildings" type="Node" parent="NavigationRegion2D/Map"]
 
-[node name="Area2D" type="Area2D" parent="Map"]
+[node name="Spawnarea" type="Area2D" parent="NavigationRegion2D/Map"]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Map/Area2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="NavigationRegion2D/Map/Spawnarea"]
 shape = SubResource("RectangleShape2D_0ncgd")
 debug_color = Color(0, 0.6, 0.701961, 0.419608)
 
@@ -87,14 +102,18 @@ zoom = Vector2(2.94, 2.94)
 position_smoothing_speed = 1e+06
 rotation_smoothing_speed = 2.0
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
+[node name="UI" type="CanvasLayer" parent="."]
+script = ExtResource("4_q5nlr")
 
-[node name="Debug" type="Label" parent="CanvasLayer"]
+[node name="Debug" type="Label" parent="UI"]
 offset_right = 40.0
 offset_bottom = 23.0
 
 [node name="CanvasModulate" type="CanvasModulate" parent="."]
+visible = false
 color = Color(0, 0, 0, 1)
 
-[node name="Enemy" parent="." instance=ExtResource("4_ek42g")]
-position = Vector2(53, -51)
+[node name="Enemy" parent="." node_paths=PackedStringArray("target") instance=ExtResource("4_ek42g")]
+position = Vector2(59, -54)
+floor_stop_on_slope = false
+target = NodePath("../Player")

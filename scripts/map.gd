@@ -1,5 +1,7 @@
 extends TileMap
 
+@export var navigation_region: NavigationRegion2D
+
 const TS = 16.0
 
 const WALL = Vector2i(2,0)
@@ -15,8 +17,7 @@ var rng = RandomNumberGenerator.new()
 
 @onready var map = $"."
 @onready var buildings = $Buildings
-@onready var spawnarea = $Area2D
-@onready var debug = $"../CanvasLayer/Debug"
+@onready var spawnarea = $Spawnarea
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -31,12 +32,12 @@ func _ready():
 			rng.randi_range(MIN_ROOM_OFFSET, MAX_ROOM_OFFSET))
 
 		build_room(width, height, offset)
+		
+	call_deferred("nav_setup")
 
-
-func _process(delta):
-	# debug.text = str(get_global_mouse_position())
-	pass
-
+func nav_setup():
+	print("called")
+	navigation_region.bake_navigation_polygon()
 
 func build_room(width: int, height:int, offset: Vector2i):
 	# create an area
