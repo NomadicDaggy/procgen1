@@ -7,9 +7,11 @@
 [ext_resource type="Script" path="res://scripts/ui.gd" id="4_q5nlr"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_y1ok5"]
-outlines = Array[PackedVector2Array]([PackedVector2Array(-1994, -1189, 1939, -1316, 2100, 1318, -1922, 1377)])
+vertices = PackedVector2Array(350, -220, 339, 265, -344, 265, -355, -231)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(-359, -235, 354, -223, 342, 268, -347, 268)])
 source_geometry_group_name = &"navigation_polygon_source_group"
-agent_radius = 6.0
+agent_radius = 3.0
 
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_t4wgn"]
 polygon = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
@@ -84,7 +86,7 @@ format = 2
 layer_0/name = "mid"
 layer_0/z_index = 10
 layer_1/name = "background"
-layer_1/z_index = 30
+layer_1/navigation_enabled = false
 layer_1/tile_data = PackedInt32Array()
 script = ExtResource("2_6xld6")
 navigation_region = NodePath("..")
@@ -106,8 +108,8 @@ position_smoothing_speed = 1e+06
 rotation_smoothing_speed = 2.0
 
 [node name="Enemy" parent="." node_paths=PackedStringArray("target") instance=ExtResource("4_ek42g")]
-z_index = 1000
-position = Vector2(54, -49)
+z_index = 20
+position = Vector2(143, -124)
 floor_stop_on_slope = false
 target = NodePath("../Player")
 
@@ -119,6 +121,7 @@ offset_right = 40.0
 offset_bottom = 23.0
 
 [node name="CanvasModulate" type="CanvasModulate" parent="."]
+visible = false
 color = Color(0, 0, 0, 1)
 
 [connection signal="bake_finished" from="NavigationRegion2D" to="UI" method="_on_navigation_region_2d_bake_finished"]

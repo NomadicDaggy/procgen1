@@ -15,7 +15,6 @@ const MAX_ROOM_OFFSET = 60
 
 var rng = RandomNumberGenerator.new()
 
-@onready var map = $"."
 @onready var buildings = $Buildings
 @onready var spawnarea = $Spawnarea
 
@@ -32,11 +31,12 @@ func _ready():
 			rng.randi_range(MIN_ROOM_OFFSET, MAX_ROOM_OFFSET))
 
 		build_room(width, height, offset)
-		
+	
+	#buildings.queue_free()
+	
 	call_deferred("nav_setup")
 
 func nav_setup():
-	print("called")
 	navigation_region.bake_navigation_polygon()
 
 func build_room(width: int, height:int, offset: Vector2i):
@@ -70,6 +70,7 @@ func build_room(width: int, height:int, offset: Vector2i):
 		for y in range(height):
 			if x == 0 or x == (width - 1) or y == 0 or y == (height - 1):
 				set_wall(x + offset[0], y + offset[1])
+				#remove_bg(x + offset[0], y + offset[1])
 	
 	# set doors
 	remove_wall(
@@ -97,13 +98,16 @@ func areas_overlap(area1: Area2D, area2: Area2D) -> bool:
 func build_bg():
 	for x in range(-100,100):
 		for y in range(-100,100):
-			map.set_bg(x, y)
+			set_bg(x, y)
 
 func set_bg(x, y):
-	map.set_cell(0, Vector2i(x, y), 0, BG)
+	set_cell(1, Vector2i(x, y), 0, BG)
+	
+func remove_bg(x, y):
+	set_cell(1, Vector2i(x, y), -1, BG)
 
 func set_wall(x, y):
-	map.set_cell(1, Vector2i(x, y), 0, WALL)
+	set_cell(0, Vector2i(x, y), 0, WALL)
 
 func remove_wall(x, y):
-	map.set_cell(1, Vector2i(x, y), -1, WALL)
+	set_cell(0, Vector2i(x, y), -1, WALL)
