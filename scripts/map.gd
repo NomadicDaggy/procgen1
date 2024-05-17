@@ -1,5 +1,7 @@
 extends TileMap
 
+signal map_ready
+
 @export var navigation_region: NavigationRegion2D
 
 const TS = 16.0
@@ -32,12 +34,12 @@ func _ready():
 
 		build_room(width, height, offset)
 	
-	#buildings.queue_free()
-	
 	call_deferred("nav_setup")
 
 func nav_setup():
 	navigation_region.bake_navigation_polygon()
+	
+	map_ready.emit()
 
 func build_room(width: int, height:int, offset: Vector2i):
 	# create an area

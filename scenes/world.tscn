@@ -1,9 +1,9 @@
 [gd_scene load_steps=11 format=3 uid="uid://bg8vu4vo2pjsk"]
 
 [ext_resource type="Texture2D" uid="uid://x6fee8su30kj" path="res://assets/ts1.png" id="1_5lnke"]
+[ext_resource type="Script" path="res://scripts/game_manager.gd" id="1_uo411"]
 [ext_resource type="Script" path="res://scripts/map.gd" id="2_6xld6"]
 [ext_resource type="PackedScene" uid="uid://cbjk1vccn32a4" path="res://scenes/player.tscn" id="3_m2xfy"]
-[ext_resource type="PackedScene" uid="uid://cnvaqhi8co16a" path="res://scenes/enemy.tscn" id="4_ek42g"]
 [ext_resource type="Script" path="res://scripts/ui.gd" id="4_q5nlr"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_y1ok5"]
@@ -82,9 +82,8 @@ collision_visibility_mode = 1
 navigation_visibility_mode = 1
 format = 2
 layer_0/name = "mid"
-layer_0/z_index = 10
+layer_0/z_index = 1000
 layer_1/name = "background"
-layer_1/z_index = 30
 layer_1/tile_data = PackedInt32Array()
 script = ExtResource("2_6xld6")
 navigation_region = NodePath("..")
@@ -92,6 +91,7 @@ navigation_region = NodePath("..")
 [node name="Buildings" type="Node" parent="NavigationRegion2D/Map"]
 
 [node name="Spawnarea" type="Area2D" parent="NavigationRegion2D/Map"]
+visible = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="NavigationRegion2D/Map/Spawnarea"]
 shape = SubResource("RectangleShape2D_0ncgd")
@@ -105,12 +105,6 @@ zoom = Vector2(2.94, 2.94)
 position_smoothing_speed = 1e+06
 rotation_smoothing_speed = 2.0
 
-[node name="Enemy" parent="." node_paths=PackedStringArray("target") instance=ExtResource("4_ek42g")]
-z_index = 1000
-position = Vector2(54, -49)
-floor_stop_on_slope = false
-target = NodePath("../Player")
-
 [node name="UI" type="CanvasLayer" parent="."]
 script = ExtResource("4_q5nlr")
 
@@ -118,8 +112,12 @@ script = ExtResource("4_q5nlr")
 offset_right = 40.0
 offset_bottom = 23.0
 
+[node name="GameManager" type="Node2D" parent="."]
+script = ExtResource("1_uo411")
+
 [node name="CanvasModulate" type="CanvasModulate" parent="."]
 color = Color(0, 0, 0, 1)
 
 [connection signal="bake_finished" from="NavigationRegion2D" to="UI" method="_on_navigation_region_2d_bake_finished"]
 [connection signal="navigation_polygon_changed" from="NavigationRegion2D" to="UI" method="_on_navigation_region_2d_navigation_polygon_changed"]
+[connection signal="map_ready" from="NavigationRegion2D/Map" to="GameManager" method="_on_map_map_ready"]
