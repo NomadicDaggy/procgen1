@@ -29,7 +29,7 @@ script = ExtResource("1_habw5")
 [node name="Navigation" type="Node2D" parent="."]
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="Navigation"]
-debug_enabled = true
+radius = 20.0
 
 [node name="Timer" type="Timer" parent="Navigation"]
 wait_time = 0.1
