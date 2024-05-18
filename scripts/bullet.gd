@@ -1,7 +1,10 @@
 extends Area2D
 
 var direction = Vector2.ZERO
-var bullet_speed = 700
+var bullet_speed = 1250
+
+func _ready():
+	z_index = 1500
 
 func _physics_process(delta):
 	position += direction * delta * bullet_speed

@@ -5,6 +5,9 @@ const BULLET = preload("res://scenes/bullet.tscn")
 @onready var game_manager = $"../GameManager"
 @onready var animated_sprite_2d = $AnimatedSprite2D
 @onready var shot_timer = $ShotTimer
+@onready var shot_light = $ShotLight
+@onready var shot_light_timer = $ShotLight/ShotLightTimer
+
 
 @export var speed = 7000
 
@@ -31,6 +34,8 @@ func _physics_process(delta):
 
 
 func shoot():
+	shot_light.enabled = true
+	shot_light_timer.start()
 	var bullet = BULLET.instantiate()
 	bullet.position = position
 	bullet.direction = (get_global_mouse_position() - global_position).normalized()
@@ -38,5 +43,10 @@ func shoot():
 	bullet.z_index = 1500
 	game_manager.add_child(bullet)
 
+
 func _on_shot_timer_timeout():
 	shot_available = true
+
+
+func _on_shot_light_timer_timeout():
+	shot_light.enabled = false

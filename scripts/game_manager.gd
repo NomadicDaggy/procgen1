@@ -1,6 +1,7 @@
 extends Node2D
 
 var enemy_scene = preload("res://scenes/enemy.tscn")
+var rng = RandomNumberGenerator.new()
 
 @onready var player = $"../Player"
 @onready var enemies = $"./Enemies"
@@ -16,7 +17,6 @@ func _process(delta):
 
 
 func _on_map_map_ready():
-	var rng = RandomNumberGenerator.new()
 	var r = 40
 	while enemies.get_child_count() < 15:
 		var x = rng.randi_range(-r,r)
@@ -32,3 +32,10 @@ func spawn_enemy(tile_pos_x: int, tile_pos_y: int):
 	enemy.target = player
 	enemy.z_index = 500
 	enemies.add_child(enemy)
+
+
+func _on_enemy_spawn_timer_timeout():
+	var r = 100
+	var x = rng.randi_range(-r,r)
+	var y = rng.randi_range(-r,r)
+	spawn_enemy(x, y)

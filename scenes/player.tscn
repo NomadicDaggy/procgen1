@@ -51,4 +51,16 @@ texture_scale = 1.84
 [node name="ShotTimer" type="Timer" parent="."]
 wait_time = 0.12
 
+[node name="ShotLight" type="PointLight2D" parent="."]
+enabled = false
+color = Color(0.929412, 0.321569, 0.0470588, 1)
+energy = 0.7
+shadow_enabled = true
+texture = ExtResource("3_5nuo1")
+texture_scale = 0.3
+
+[node name="ShotLightTimer" type="Timer" parent="ShotLight"]
+wait_time = 0.05
+
 [connection signal="timeout" from="ShotTimer" to="." method="_on_shot_timer_timeout"]
+[connection signal="timeout" from="ShotLight/ShotLightTimer" to="." method="_on_shot_light_timer_timeout"]
