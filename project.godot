@@ -60,6 +60,7 @@ main_action={
 2d_physics/layer_1="walls"
 2d_physics/layer_2="player"
 2d_physics/layer_3="enemy"
+2d_physics/layer_6="bullet"
 
 [physics]
 

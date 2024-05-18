@@ -31,12 +31,10 @@ func _physics_process(delta):
 
 
 func shoot():
-	print("shooting")
 	var bullet = BULLET.instantiate()
 	bullet.position = position
 	bullet.direction = (get_global_mouse_position() - global_position).normalized()
 	bullet.rotation = bullet.direction.angle() + PI/2
-	print(bullet.rotation)
 	bullet.z_index = 1500
 	game_manager.add_child(bullet)
 
