@@ -1,7 +1,12 @@
+#TODO: If bullet speed is faster than 1000ish, the bullet area can pass
+# through the target area. For faster bullets we would need to raycast
+# (maybe not every frame since enemies are slow) back in the direction
+# of the player to see if we might have gone through an enemy.
+
 extends Area2D
 
 var direction = Vector2.ZERO
-var bullet_speed = 1250
+var bullet_speed = 750
 
 func _ready():
 	z_index = 1500
