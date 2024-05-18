@@ -47,3 +47,8 @@ shadow_enabled = true
 shadow_filter_smooth = 3.7
 texture = ExtResource("3_5nuo1")
 texture_scale = 1.84
+
+[node name="ShotTimer" type="Timer" parent="."]
+wait_time = 0.12
+
+[connection signal="timeout" from="ShotTimer" to="." method="_on_shot_timer_timeout"]

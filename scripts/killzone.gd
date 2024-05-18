@@ -1,11 +1,15 @@
 extends Area2D
 
+signal self_destruct
+
 @onready var timer = $Timer
 
 func _on_body_entered(body):
 	
 	# Got stuck in wall or smth
 	if body.name != "Player":
+		print("spawned in wall, destructing")
+		get_parent().queue_free()
 		return
 	
 	print("You died!")

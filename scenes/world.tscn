@@ -11,7 +11,7 @@ outlines = Array[PackedVector2Array]([PackedVector2Array(-1994, -1189, 1939, -13
 source_geometry_group_name = &"navigation_polygon_source_group"
 agent_radius = 6.0
 
-[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_t4wgn"]
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_uoijl"]
 polygon = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_mpvrb"]
@@ -23,7 +23,7 @@ texture = ExtResource("1_5lnke")
 1:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 1:0/0/physics_layer_0/angular_velocity = 0.0
 2:0/0 = 0
-2:0/0/occlusion_layer_0/polygon = SubResource("OccluderPolygon2D_t4wgn")
+2:0/0/occlusion_layer_0/polygon = SubResource("OccluderPolygon2D_uoijl")
 2:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 2:0/0/physics_layer_0/angular_velocity = 0.0
 2:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
@@ -114,6 +114,9 @@ offset_bottom = 23.0
 
 [node name="GameManager" type="Node2D" parent="."]
 script = ExtResource("1_uo411")
+
+[node name="Enemies" type="Node2D" parent="GameManager"]
+z_index = 500
 
 [node name="CanvasModulate" type="CanvasModulate" parent="."]
 color = Color(0, 0, 0, 1)

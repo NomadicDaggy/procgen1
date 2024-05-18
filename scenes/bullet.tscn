@@ -1,0 +1,41 @@
+[gd_scene load_steps=6 format=3 uid="uid://buev55om1v7xp"]
+
+[ext_resource type="Texture2D" uid="uid://x6fee8su30kj" path="res://assets/ts1.png" id="1_cda2n"]
+[ext_resource type="Script" path="res://scripts/bullet.gd" id="1_quxxx"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4odik"]
+size = Vector2(2, 3)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_iwdw1"]
+atlas = ExtResource("1_cda2n")
+region = Rect2(48, 0, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_74wjd"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_iwdw1")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="Bullet" type="Area2D"]
+collision_mask = 0
+script = ExtResource("1_quxxx")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 0.5)
+shape = SubResource("RectangleShape2D_4odik")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_74wjd")
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 4.643
+one_shot = true
+autostart = true
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
