@@ -4,8 +4,6 @@ signal map_ready
 
 @export var navigation_region: NavigationRegion2D
 
-const TS = 16.0
-
 const WALL = Vector2i(2,0)
 const BG = Vector2i(1,0)
 
@@ -14,8 +12,6 @@ const MIN_ROOM_SIZE = 6
 const MAX_ROOM_SIZE = 14
 const MIN_ROOM_OFFSET = -60
 const MAX_ROOM_OFFSET = 60
-
-var rng = RandomNumberGenerator.new()
 
 @onready var buildings = $Buildings
 @onready var spawnarea = $Spawnarea
@@ -26,11 +22,11 @@ func _ready():
 	build_bg()
 
 	for i in range(MAX_ROOMS):
-		var width = rng.randi_range(MIN_ROOM_SIZE, MAX_ROOM_SIZE)
-		var height = rng.randi_range(MIN_ROOM_SIZE, MAX_ROOM_SIZE)
+		var width = G.rng.randi_range(MIN_ROOM_SIZE, MAX_ROOM_SIZE)
+		var height = G.rng.randi_range(MIN_ROOM_SIZE, MAX_ROOM_SIZE)
 		var offset = Vector2i(
-			rng.randi_range(MIN_ROOM_OFFSET, MAX_ROOM_OFFSET),
-			rng.randi_range(MIN_ROOM_OFFSET, MAX_ROOM_OFFSET))
+			G.rng.randi_range(MIN_ROOM_OFFSET, MAX_ROOM_OFFSET),
+			G.rng.randi_range(MIN_ROOM_OFFSET, MAX_ROOM_OFFSET))
 
 		build_room(width, height, offset)
 	
@@ -45,11 +41,11 @@ func build_room(width: int, height:int, offset: Vector2i):
 	# create an area
 	var collision_shape = CollisionShape2D.new()
 	collision_shape.shape = RectangleShape2D.new()
-	collision_shape.shape.size = Vector2(width * TS, height * TS)
+	collision_shape.shape.size = Vector2(width * G.TS, height * G.TS)
 	var area = Area2D.new()
 	area.position = Vector2(
-		(offset[0] + (width / 2.0)) * TS,
-		(offset[1] + (height / 2.0)) * TS
+		(offset[0] + (width / 2.0)) * G.TS,
+		(offset[1] + (height / 2.0)) * G.TS
 	)
 	area.add_child(collision_shape)
 	buildings.add_child(area)
@@ -77,10 +73,10 @@ func build_room(width: int, height:int, offset: Vector2i):
 	# set doors
 	remove_wall(
 		[0, width - 1].pick_random() + offset[0],
-		rng.randi_range(1, height - 2) + offset[1])
+		G.rng.randi_range(1, height - 2) + offset[1])
 			
 	remove_wall(
-		rng.randi_range(1, width - 2) + offset[0],
+		G.rng.randi_range(1, width - 2) + offset[0],
 		[0, height - 1].pick_random() + offset[1])
 
 func areas_overlap(area1: Area2D, area2: Area2D) -> bool:

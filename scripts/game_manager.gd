@@ -2,43 +2,46 @@ extends Node2D
 
 @onready var player = $"../Player"
 @onready var enemies = $"./Enemies"
+@onready var enemy_spawn_timer = $EnemySpawnTimer
 
 const ENEMY_NOSPAWN_SIZE = 6
 const ENEMY_SPAWN_MAX_DISTANCE = 25
+const MAX_ENEMIES = 600
 
 var enemy_scene = preload("res://scenes/enemy.tscn")
-var rng = RandomNumberGenerator.new()
 
-# Called when the node enters the scene tree for the first time.
 func _ready():
-	pass
-
+	enemy_spawn_timer.wait_time = 0.03
+	enemy_spawn_timer.autostart = true
 
 func _on_map_map_ready():
 	# spawn enemies
 	while enemies.get_child_count() < 15:
-		var x = rng.randi_range(-ENEMY_SPAWN_MAX_DISTANCE, ENEMY_SPAWN_MAX_DISTANCE)
-		var y = rng.randi_range(-ENEMY_SPAWN_MAX_DISTANCE, ENEMY_SPAWN_MAX_DISTANCE)
+		var x = G.rng.randi_range(-ENEMY_SPAWN_MAX_DISTANCE, ENEMY_SPAWN_MAX_DISTANCE)
+		var y = G.rng.randi_range(-ENEMY_SPAWN_MAX_DISTANCE, ENEMY_SPAWN_MAX_DISTANCE)
 		if (
 			(x > -ENEMY_NOSPAWN_SIZE and x < ENEMY_NOSPAWN_SIZE) or
 			(y > -ENEMY_NOSPAWN_SIZE and y < ENEMY_NOSPAWN_SIZE)):
 				continue
-		spawn_enemy(x, y)
+		spawn_enemy(Vector2(x,y))
 
 
-func spawn_enemy(tile_pos_x: int, tile_pos_y: int):
+func spawn_enemy(pos: Vector2):
 	var enemy = enemy_scene.instantiate()
-	enemy.position += Vector2(tile_pos_x * 16.0, tile_pos_y * 16.0)
+	enemy.position += Vector2(pos[0] * G.TS, pos[1] * G.TS)
 	enemy.target = player
 	enemy.z_index = 500
 	enemies.add_child(enemy)
 
 
 func _on_enemy_spawn_timer_timeout():
-	if enemies.get_child_count() >= 120:
+	if enemies.get_child_count() >= MAX_ENEMIES:
 		return
 	
-	var r = 100
-	var x = rng.randi_range(-r,r)
-	var y = rng.randi_range(-r,r)
-	spawn_enemy(x, y)
+	var r = 100 * G.TS
+	var pos = Vector2(G.rng.randi_range(-r,r), G.rng.randi_range(-r,r))
+	
+	if pos.distance_to(player.global_position) < 40 * G.TS:
+		return
+		
+	spawn_enemy(pos)

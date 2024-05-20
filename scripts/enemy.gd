@@ -11,12 +11,11 @@ extends CharacterBody2D
 @onready var patrol_path_timer = $PatrolPathTimer
 @onready var debug_text = $DebugText
 
-@onready var rng = RandomNumberGenerator.new()
-@onready var patrol_margin = rng.randf_range(0 * 16.0, 5 * 16.0)
-@onready var chase_speed = rng.randi_range(35, 120)
-@onready var chase_accel = rng.randi_range(5, 13)
-@onready var patrol_speed = rng.randi_range(10, 50)
-@onready var patrol_accel = rng.randi_range(2, 6)
+@onready var patrol_margin = G.rng.randf_range(0 * G.TS, 5 * G.TS)
+@onready var chase_speed = G.rng.randi_range(35, 120)
+@onready var chase_accel = G.rng.randi_range(5, 13)
+@onready var patrol_speed = G.rng.randi_range(10, 50)
+@onready var patrol_accel = G.rng.randi_range(2, 6)
 
 
 #var chasing_target = false
@@ -26,7 +25,7 @@ var patrol_target: Vector2
 
 
 func _ready():
-	patrol_path_timer.wait_time = rng.randf_range(0.5, 4)
+	patrol_path_timer.wait_time = G.rng.randf_range(0.5, 4)
 
 func _physics_process(delta):
 	match state:
@@ -35,7 +34,7 @@ func _physics_process(delta):
 			velocity = velocity.lerp(direction * chase_speed, chase_accel * delta)
 			move_and_slide()
 		State.PATROLLING:
-			if global_position.distance_to(patrol_target) < 16.0:
+			if global_position.distance_to(patrol_target) < G.TS:
 				state = State.IDLE
 				var direction = (patrol_target - global_position).normalized()
 				velocity = velocity.lerp(direction * 0, patrol_accel * delta)
@@ -51,10 +50,8 @@ func _physics_process(delta):
 
 func _process(delta):
 	debug_text.text = "%s\n" % State.keys()[state]
-	debug_text.text += "%s" % round_to_dec(patrol_path_timer.time_left, 1)
+	debug_text.text += "%s" % G.round_to_dec(patrol_path_timer.time_left, 1)
 
-func round_to_dec(num, digit):
-	return round(num * pow(10.0, digit)) / pow(10.0, digit)
 
 func shot():
 	state = State.DEAD
