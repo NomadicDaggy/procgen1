@@ -6,7 +6,7 @@ extends Node2D
 
 const ENEMY_NOSPAWN_SIZE = 6
 const ENEMY_SPAWN_MAX_DISTANCE = 25
-const MAX_ENEMIES = 600
+const MAX_ENEMIES = 300
 
 var enemy_scene = preload("res://scenes/enemy.tscn")
 

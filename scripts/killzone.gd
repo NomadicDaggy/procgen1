@@ -8,7 +8,7 @@ signal self_destruct
 
 func _on_body_entered(body):
 	# Got stuck in wall or smth
-	if body.name != "Player":
+	if body.name != G.PLAYER_NAME:
 		if spawnTimer.is_stopped():
 			return
 		print("spawned in wall, destructing")

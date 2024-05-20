@@ -17,11 +17,11 @@ extends CharacterBody2D
 @onready var patrol_speed = G.rng.randi_range(10, 50)
 @onready var patrol_accel = G.rng.randi_range(2, 6)
 
-
 #var chasing_target = false
 enum State { PATROLLING, CHASING, IDLE, DEAD }
 
 var patrol_target: Vector2
+var detecting = false
 
 
 func _ready():
@@ -46,11 +46,24 @@ func _physics_process(delta):
 			move_and_slide()
 		State.DEAD:
 			pass
+	
+	if detecting:
+		var space_state = get_world_2d().direct_space_state
+		var col_mask = 2
+		# TODO: add max length to player detecting raycast
+		var query = PhysicsRayQueryParameters2D.create(global_position, target.global_position, col_mask)
+		var result = space_state.intersect_ray(query)
+		if result["collider"].name == G.PLAYER_NAME:
+			state = State.CHASING
+			chase_timer.start()
 
 
 func _process(delta):
 	debug_text.text = "%s\n" % State.keys()[state]
 	debug_text.text += "%s" % G.round_to_dec(patrol_path_timer.time_left, 1)
+	
+	if position.distance_to(target.global_position) > 100 * G.TS:
+		queue_free()
 
 
 func shot():
@@ -63,18 +76,14 @@ func _on_timer_timeout():
 		navigation_agent.target_position = target.global_position
 
 func _on_player_vision_area_body_entered(body):
-	if body.name == "Player":
-		state = State.CHASING
-
-func _on_player_vision_area_body_exited(body):
-	if state == State.DEAD:
+	if body.name != G.PLAYER_NAME:
 		return
-	
-	if body.name == "Player":
-		chase_timer.start()
+	detecting = true
 
 func _on_chase_timer_timeout():
 	state = State.PATROLLING
+	detecting = false
+	print("gave up chasing")
 
 func _on_patrol_path_timer_timeout():
 	var px = position.x
