@@ -1,10 +1,13 @@
 extends Node2D
 
-var enemy_scene = preload("res://scenes/enemy.tscn")
-var rng = RandomNumberGenerator.new()
-
 @onready var player = $"../Player"
 @onready var enemies = $"./Enemies"
+
+const ENEMY_NOSPAWN_SIZE = 6
+const ENEMY_SPAWN_MAX_DISTANCE = 25
+
+var enemy_scene = preload("res://scenes/enemy.tscn")
+var rng = RandomNumberGenerator.new()
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -12,17 +15,19 @@ func _ready():
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	pass
+#func _process(delta):
+#	pass
 
 
 func _on_map_map_ready():
-	var r = 40
+	# spawn enemies
 	while enemies.get_child_count() < 15:
-		var x = rng.randi_range(-r,r)
-		var y = rng.randi_range(-r,r)
-		if (x > -10 and x < 10) or (y > -10 and y < 10):
-			continue
+		var x = rng.randi_range(-ENEMY_SPAWN_MAX_DISTANCE, ENEMY_SPAWN_MAX_DISTANCE)
+		var y = rng.randi_range(-ENEMY_SPAWN_MAX_DISTANCE, ENEMY_SPAWN_MAX_DISTANCE)
+		if (
+			(x > -ENEMY_NOSPAWN_SIZE and x < ENEMY_NOSPAWN_SIZE) or
+			(y > -ENEMY_NOSPAWN_SIZE and y < ENEMY_NOSPAWN_SIZE)):
+				continue
 		spawn_enemy(x, y)
 
 

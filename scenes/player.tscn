@@ -42,11 +42,11 @@ animation = &"walk"
 shape = SubResource("CircleShape2D_2opww")
 
 [node name="PointLight2D" type="PointLight2D" parent="."]
-energy = 2.38
+energy = 2.73
 shadow_enabled = true
-shadow_filter_smooth = 3.7
+shadow_filter_smooth = 0.9
 texture = ExtResource("3_5nuo1")
-texture_scale = 1.84
+texture_scale = 3.13
 
 [node name="ShotTimer" type="Timer" parent="."]
 wait_time = 0.12

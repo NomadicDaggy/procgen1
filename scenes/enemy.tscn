@@ -1,11 +1,8 @@
-[gd_scene load_steps=7 format=3 uid="uid://cnvaqhi8co16a"]
+[gd_scene load_steps=8 format=3 uid="uid://cnvaqhi8co16a"]
 
 [ext_resource type="Script" path="res://scripts/enemy.gd" id="1_habw5"]
 [ext_resource type="Texture2D" uid="uid://cyga8hpi63heo" path="res://assets/enemy.png" id="1_ugilk"]
 [ext_resource type="PackedScene" uid="uid://7y0qcpweo22u" path="res://scenes/killzone.tscn" id="2_mx8rb"]
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_p6ogd"]
-radius = 6.0
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_5l27c"]
 atlas = ExtResource("1_ugilk")
@@ -22,6 +19,12 @@ animations = [{
 "speed": 5.0
 }]
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_p6ogd"]
+radius = 6.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_euqso"]
+radius = 142.056
+
 [node name="Enemy" type="CharacterBody2D"]
 collision_layer = 36
 collision_mask = 33
@@ -29,6 +32,10 @@ motion_mode = 1
 slide_on_ceiling = false
 floor_block_on_wall = false
 script = ExtResource("1_habw5")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_w1hcc")
+animation = &"idle"
 
 [node name="Collision2DForWalls" type="CollisionShape2D" parent="."]
 z_index = 100
@@ -43,19 +50,29 @@ radius = 20.0
 wait_time = 0.1
 autostart = true
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-sprite_frames = SubResource("SpriteFrames_w1hcc")
-animation = &"idle"
-
 [node name="Killzone" parent="." node_paths=PackedStringArray("spawnTimer") instance=ExtResource("2_mx8rb")]
 collision_layer = 0
-spawnTimer = NodePath("../SpawnTimer")
+spawnTimer = NodePath("../PatrolPathTimer")
 
 [node name="Collision2DForPlayer" type="CollisionShape2D" parent="Killzone"]
 shape = SubResource("CircleShape2D_p6ogd")
 
-[node name="SpawnTimer" type="Timer" parent="."]
-one_shot = true
+[node name="PlayerVisionArea" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerVisionArea"]
+shape = SubResource("CircleShape2D_euqso")
+
+[node name="PatrolPathTimer" type="Timer" parent="."]
+wait_time = 2.0
 autostart = true
 
+[node name="ChaseTimer" type="Timer" parent="."]
+wait_time = 10.0
+
 [connection signal="timeout" from="Navigation/Timer" to="." method="_on_timer_timeout"]
+[connection signal="body_entered" from="PlayerVisionArea" to="." method="_on_player_vision_area_body_entered"]
+[connection signal="body_exited" from="PlayerVisionArea" to="." method="_on_player_vision_area_body_exited"]
+[connection signal="timeout" from="PatrolPathTimer" to="." method="_on_patrol_path_timer_timeout"]
+[connection signal="timeout" from="ChaseTimer" to="." method="_on_chase_timer_timeout"]
