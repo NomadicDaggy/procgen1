@@ -50,9 +50,15 @@ func _physics_process(delta):
 	if detecting:
 		var space_state = get_world_2d().direct_space_state
 		var col_mask = 2
+		
 		# TODO: add max length to player detecting raycast
 		var query = PhysicsRayQueryParameters2D.create(global_position, target.global_position, col_mask)
 		var result = space_state.intersect_ray(query)
+		
+		# no collision returns empty dict
+		if result.size() == 0:
+			return
+			
 		if result["collider"].name == G.PLAYER_NAME:
 			state = State.CHASING
 			chase_timer.start()
@@ -62,8 +68,8 @@ func _process(delta):
 	debug_text.text = "%s\n" % State.keys()[state]
 	debug_text.text += "%s" % G.round_to_dec(patrol_path_timer.time_left, 1)
 	
-	if position.distance_to(target.global_position) > 100 * G.TS:
-		queue_free()
+	#if position.distance_to(target.global_position) > 100 * G.TS:
+	#	queue_free()
 
 
 func shot():
