@@ -4,9 +4,9 @@ extends Node2D
 @onready var enemies = $"./Enemies"
 @onready var enemy_spawn_timer = $EnemySpawnTimer
 
-const ENEMY_NOSPAWN_SIZE = 6
-const ENEMY_SPAWN_MAX_DISTANCE = 25
-const MAX_ENEMIES = 300
+const ENEMY_NOSPAWN_SIZE = 4
+const ENEMY_SPAWN_MAX_DISTANCE = 8
+const MAX_ENEMIES = 1
 
 var enemy_scene = preload("res://scenes/enemy.tscn")
 
@@ -38,10 +38,10 @@ func _on_enemy_spawn_timer_timeout():
 	if enemies.get_child_count() >= MAX_ENEMIES:
 		return
 	
-	var r = 60 * G.TS
+	var r = ENEMY_SPAWN_MAX_DISTANCE * G.TS
 	var pos = Vector2(G.rng.randi_range(-r,r), G.rng.randi_range(-r,r))
 	
-	if pos.distance_to(player.global_position) < 20 * G.TS:
+	if pos.distance_to(player.global_position) < ENEMY_NOSPAWN_SIZE * G.TS:
 		return
 		
 	spawn_enemy(pos)
