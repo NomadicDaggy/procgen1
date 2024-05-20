@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://cnvaqhi8co16a"]
+[gd_scene load_steps=8 format=3 uid="uid://cnvaqhi8co16a"]
 
 [ext_resource type="Script" path="res://scripts/enemy.gd" id="1_habw5"]
 [ext_resource type="Texture2D" uid="uid://cyga8hpi63heo" path="res://assets/enemy.png" id="1_ugilk"]
@@ -25,11 +25,6 @@ radius = 6.0
 [sub_resource type="CircleShape2D" id="CircleShape2D_euqso"]
 radius = 142.056
 
-[sub_resource type="LabelSettings" id="LabelSettings_fbo3k"]
-line_spacing = 0.0
-font_size = 12
-shadow_size = 0
-
 [node name="Enemy" type="CharacterBody2D"]
 collision_layer = 36
 collision_mask = 33
@@ -37,6 +32,9 @@ motion_mode = 1
 slide_on_ceiling = false
 floor_block_on_wall = false
 script = ExtResource("1_habw5")
+speed = null
+acceleration = null
+state = null
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_w1hcc")
@@ -63,7 +61,6 @@ spawnTimer = NodePath("../PatrolPathTimer")
 shape = SubResource("CircleShape2D_p6ogd")
 
 [node name="PlayerVisionArea" type="Area2D" parent="."]
-visible = false
 collision_layer = 0
 collision_mask = 2
 
@@ -77,14 +74,11 @@ autostart = true
 [node name="ChaseTimer" type="Timer" parent="."]
 wait_time = 10.0
 
-[node name="DebugText" type="Label" parent="."]
-offset_left = -58.0
-offset_top = -237.0
-offset_right = 58.0
-offset_bottom = -10.0
-label_settings = SubResource("LabelSettings_fbo3k")
-horizontal_alignment = 1
-vertical_alignment = 2
+[node name="DebugCanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="DebugText" type="Label" parent="DebugCanvasLayer"]
+offset_right = 40.0
+offset_bottom = 23.0
 
 [connection signal="timeout" from="Navigation/Timer" to="." method="_on_timer_timeout"]
 [connection signal="body_entered" from="PlayerVisionArea" to="." method="_on_player_vision_area_body_entered"]

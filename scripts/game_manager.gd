@@ -14,11 +14,6 @@ func _ready():
 	pass
 
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
-
-
 func _on_map_map_ready():
 	# spawn enemies
 	while enemies.get_child_count() < 15:
@@ -40,6 +35,9 @@ func spawn_enemy(tile_pos_x: int, tile_pos_y: int):
 
 
 func _on_enemy_spawn_timer_timeout():
+	if enemies.get_child_count() >= 120:
+		return
+	
 	var r = 100
 	var x = rng.randi_range(-r,r)
 	var y = rng.randi_range(-r,r)
