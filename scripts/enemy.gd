@@ -102,7 +102,6 @@ func move_to(pos, s, a, d):
 func shot():
 	state = State.DEAD
 	queue_free()
-	
 
 func _on_timer_timeout():
 	if state == State.CHASING:

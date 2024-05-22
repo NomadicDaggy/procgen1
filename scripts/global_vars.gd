@@ -1,6 +1,11 @@
 extends Node
 
+# Tilesize in pixels
 const TS = 16.0
+
+# Chunksize in tiles
+const CS = 64
+
 const PLAYER_NAME = "Player"
 
 var debug_mode = false

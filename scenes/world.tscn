@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://bg8vu4vo2pjsk"]
+[gd_scene load_steps=14 format=3 uid="uid://bg8vu4vo2pjsk"]
 
 [ext_resource type="Texture2D" uid="uid://x6fee8su30kj" path="res://assets/ts1.png" id="1_5lnke"]
 [ext_resource type="Script" path="res://scripts/game_manager.gd" id="1_uo411"]
@@ -6,9 +6,10 @@
 [ext_resource type="PackedScene" uid="uid://cbjk1vccn32a4" path="res://scenes/player.tscn" id="3_m2xfy"]
 [ext_resource type="Script" path="res://scripts/ui.gd" id="4_q5nlr"]
 [ext_resource type="FontFile" uid="uid://dmhp7vho1grrx" path="res://assets/FiraMono-Medium.ttf" id="5_vanpt"]
+[ext_resource type="Script" path="res://scripts/freecam.gd" id="7_kml0k"]
 
-[sub_resource type="NavigationPolygon" id="NavigationPolygon_y1ok5"]
-outlines = Array[PackedVector2Array]([PackedVector2Array(-1994, -1189, 1939, -1316, 2100, 1318, -1922, 1377)])
+[sub_resource type="NavigationPolygon" id="NavigationPolygon_ktfvu"]
+outlines = Array[PackedVector2Array]([PackedVector2Array(-26426, -16115, 29510, -16403, 29222, 13645, -25786, 12845)])
 source_geometry_group_name = &"navigation_polygon_source_group"
 agent_radius = 6.0
 
@@ -80,7 +81,7 @@ outline_color = Color(0, 0, 0, 1)
 [node name="NavigationRegion2D" type="NavigationRegion2D" parent="."]
 z_index = 25
 position = Vector2(-7, 7)
-navigation_polygon = SubResource("NavigationPolygon_y1ok5")
+navigation_polygon = SubResource("NavigationPolygon_ktfvu")
 
 [node name="Map" type="TileMap" parent="NavigationRegion2D" node_paths=PackedStringArray("navigation_region")]
 position = Vector2(7, -7)
@@ -145,6 +146,10 @@ position = Vector2(-63, 2)
 zoom = Vector2(1.995, 1.995)
 position_smoothing_speed = 1e+06
 rotation_smoothing_speed = 2.0
+
+[node name="Freecam" type="Camera2D" parent="."]
+zoom = Vector2(2, 2)
+script = ExtResource("7_kml0k")
 
 [connection signal="bake_finished" from="NavigationRegion2D" to="UI" method="_on_navigation_region_2d_bake_finished"]
 [connection signal="navigation_polygon_changed" from="NavigationRegion2D" to="UI" method="_on_navigation_region_2d_navigation_polygon_changed"]

@@ -18,7 +18,7 @@ func _ready():
 	if G.debug_mode:
 		enemy_nospawn_size = 8
 		enemy_spawn_max_dist = 10
-		max_enemies = 5
+		max_enemies = 0
 
 #func _on_map_map_ready():
 #	# spawn enemies
