@@ -14,9 +14,9 @@ extends CharacterBody2D
 
 @onready var patrol_margin = G.rng.randf_range(0 * G.TS, 5 * G.TS)
 @onready var patrol_speed = G.rng.randi_range(10, 50)
-@onready var patrol_accel = G.rng.randi_range(2, 6)
-@onready var chase_speed = patrol_speed * G.rng.randf_range(1.2, 3.0)
-@onready var chase_accel = patrol_accel * G.rng.randf_range(1.2, 3.0)
+@onready var patrol_accel = G.rng.randi_range(2, 4)
+@onready var chase_speed = clampf(patrol_speed * G.rng.randf_range(1.5, 5.0), 80, 150)
+@onready var chase_accel = clampf(patrol_accel * G.rng.randf_range(1.5, 5.0), 3, 6)
 
 #var chasing_target = false
 enum State { PATROLLING, CHASING, IDLE, DEAD }
@@ -27,22 +27,21 @@ var factor = 0
 
 
 func _ready():
-	patrol_path_timer.wait_time = G.rng.randf_range(0.5, 4)
+	patrol_path_timer.wait_time = G.rng.randf_range(1, 2.5)
 
 func _physics_process(delta):
 	
 	match state:
 		State.CHASING:
 			var goal_pos = navigation_agent.get_next_path_position() - global_position
-			var distance_to_player = global_position.distance_to(target.global_position)
-			
-			var raycast_result = raycast_to_player()
-			if raycast_result and raycast_result["collider"].name == G.PLAYER_NAME:
-			# TODO: debug this
-				factor = G.custom_ceil(distance_to_player / 100, 0.9)
-				goal_pos += Vector2(
-					goal_pos[0] + target.velocity[0] * factor,
-					goal_pos[1] + target.velocity[1] * factor)
+			#var distance_to_player = global_position.distance_to(target.global_position)
+			#var raycast_result = raycast_to_player()
+			#if raycast_result and raycast_result["collider"].name == G.PLAYER_NAME:
+			## TODO: debug this
+				#factor = G.custom_ceil(distance_to_player / 100, 0.9)
+				#goal_pos += Vector2(
+					#goal_pos[0] + target.velocity[0] * factor,
+					#goal_pos[1] + target.velocity[1] * factor)
 				
 			move_to(goal_pos, chase_speed, chase_accel, delta)
 		State.PATROLLING:
@@ -124,6 +123,11 @@ func _on_chase_timer_timeout():
 func _on_patrol_path_timer_timeout():
 	var px = position.x
 	var py = position.y
-	patrol_target = Vector2(px + randf_range(-patrol_margin, patrol_margin), py + randf_range(-patrol_margin, patrol_margin))
+	
+	# set new patrol target
+	patrol_target = Vector2(
+		px + randf_range(-patrol_margin, patrol_margin),
+		py + randf_range(-patrol_margin, patrol_margin))
+		
 	if state != State.CHASING:
 		state = State.PATROLLING

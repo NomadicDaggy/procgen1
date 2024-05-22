@@ -4,9 +4,9 @@ extends Node2D
 @onready var enemies = $"./Enemies"
 @onready var enemy_spawn_timer = $EnemySpawnTimer
 
-var enemy_nospawn_size = 30
-var enemy_spawn_max_dist = 80
-var max_enemies = 200
+var enemy_nospawn_size = 40
+var enemy_spawn_max_dist = 90
+var max_enemies = 300
 
 
 var enemy_scene = preload("res://scenes/enemy.tscn")

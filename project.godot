@@ -31,11 +31,6 @@ window/size/viewport_width=2512
 window/size/viewport_height=1413
 window/size/initial_position=Vector2i(-1435, 0)
 
-[editor]
-
-version_control/plugin_name="GitPlugin"
-version_control/autoload_on_startup=true
-
 [input]
 
 move_left={
@@ -71,6 +66,7 @@ reload={
 
 [layer_names]
 
+2d_render/layer_2="player_light"
 2d_physics/layer_1="walls"
 2d_physics/layer_2="player"
 2d_physics/layer_3="enemy"

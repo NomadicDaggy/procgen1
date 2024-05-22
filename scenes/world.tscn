@@ -139,7 +139,7 @@ color = Color(0.4, 0.4, 0.4, 1)
 
 [node name="Player" parent="." instance=ExtResource("3_m2xfy")]
 z_index = 1000
-position = Vector2(-62, -6)
+position = Vector2(-63, 2)
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
 zoom = Vector2(1.995, 1.995)

@@ -41,7 +41,7 @@ func build_room(width: int, height:int, offset: Vector2i):
 	# create an area
 	var collision_shape = CollisionShape2D.new()
 	collision_shape.shape = RectangleShape2D.new()
-	collision_shape.shape.size = Vector2(width * G.TS, height * G.TS)
+	collision_shape.shape.size = Vector2((width + 1) * G.TS, (height + 1) * G.TS)
 	var area = Area2D.new()
 	area.position = Vector2(
 		(offset[0] + (width / 2.0)) * G.TS,
