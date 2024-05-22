@@ -1,10 +1,11 @@
-[gd_scene load_steps=11 format=3 uid="uid://bg8vu4vo2pjsk"]
+[gd_scene load_steps=13 format=3 uid="uid://bg8vu4vo2pjsk"]
 
 [ext_resource type="Texture2D" uid="uid://x6fee8su30kj" path="res://assets/ts1.png" id="1_5lnke"]
 [ext_resource type="Script" path="res://scripts/game_manager.gd" id="1_uo411"]
 [ext_resource type="Script" path="res://scripts/map.gd" id="2_6xld6"]
 [ext_resource type="PackedScene" uid="uid://cbjk1vccn32a4" path="res://scenes/player.tscn" id="3_m2xfy"]
 [ext_resource type="Script" path="res://scripts/ui.gd" id="4_q5nlr"]
+[ext_resource type="FontFile" uid="uid://dmhp7vho1grrx" path="res://assets/FiraMono-Medium.ttf" id="5_vanpt"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_y1ok5"]
 outlines = Array[PackedVector2Array]([PackedVector2Array(-1994, -1189, 1939, -1316, 2100, 1318, -1922, 1377)])
@@ -68,6 +69,12 @@ sources/0 = SubResource("TileSetAtlasSource_mpvrb")
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_0ncgd"]
 size = Vector2(144, 132)
 
+[sub_resource type="LabelSettings" id="LabelSettings_2hsjs"]
+font = ExtResource("5_vanpt")
+font_size = 14
+outline_size = 5
+outline_color = Color(0, 0, 0, 1)
+
 [node name="world" type="Node2D"]
 
 [node name="NavigationRegion2D" type="NavigationRegion2D" parent="."]
@@ -115,6 +122,7 @@ script = ExtResource("4_q5nlr")
 [node name="Debug" type="Label" parent="UI"]
 offset_right = 40.0
 offset_bottom = 23.0
+label_settings = SubResource("LabelSettings_2hsjs")
 
 [node name="PlayerInfo" type="Label" parent="UI"]
 offset_left = 670.0
