@@ -16,6 +16,7 @@ func _on_body_entered(body):
 		return
 	
 	print("You died!")
+	body.dead = true
 	Engine.time_scale = 0.1
 	timer.start()
 	body.get_node("CollisionShape2D").queue_free()

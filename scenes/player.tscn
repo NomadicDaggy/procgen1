@@ -39,14 +39,18 @@ sprite_frames = SubResource("SpriteFrames_yywjy")
 animation = &"walk"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
 shape = SubResource("CircleShape2D_2opww")
 
 [node name="PointLight2D" type="PointLight2D" parent="."]
-energy = 2.73
+color = Color(0, 0, 0, 1)
+energy = 0.0
+blend_mode = 1
 shadow_enabled = true
+shadow_color = Color(1, 1, 1, 1)
 shadow_filter_smooth = 0.9
 texture = ExtResource("3_5nuo1")
-texture_scale = 3.13
+texture_scale = 6.0
 
 [node name="ShotTimer" type="Timer" parent="."]
 wait_time = 0.35

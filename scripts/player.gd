@@ -10,8 +10,11 @@ const BULLET = preload("res://scenes/bullet.tscn")
 @onready var shot_light = $ShotLight
 @onready var shot_light_timer = $ShotLight/ShotLightTimer
 @onready var reload_timer = $ReloadTimer
+@onready var player_main_light = $PointLight2D
+
 
 @export var speed = 7000
+@export var dead = false
 
 const MAG_CAPACITY = 7
 var shots_in_mag: int = MAG_CAPACITY
@@ -19,6 +22,8 @@ var round_in_chamber = true
 
 func _ready():
 	player_info_text_changed.emit(str(shots_in_mag))
+	if G.debug_mode:
+		player_main_light.shadow_enabled = false
 
 
 func _physics_process(delta):
@@ -33,6 +38,9 @@ func _physics_process(delta):
 
 	look_at(get_global_mouse_position())
 	move_and_slide()
+	
+	if dead:
+		return
 	
 	if Input.get_action_strength("main_action"):
 		try_shoot()

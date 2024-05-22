@@ -13,16 +13,17 @@ extends CharacterBody2D
 @onready var debug_velocity_line = $DebugVelocityLine
 
 @onready var patrol_margin = G.rng.randf_range(0 * G.TS, 5 * G.TS)
-@onready var chase_speed = G.rng.randi_range(35, 120)
-@onready var chase_accel = G.rng.randi_range(5, 13)
 @onready var patrol_speed = G.rng.randi_range(10, 50)
 @onready var patrol_accel = G.rng.randi_range(2, 6)
+@onready var chase_speed = patrol_speed * G.rng.randf_range(1.2, 3.0)
+@onready var chase_accel = patrol_accel * G.rng.randf_range(1.2, 3.0)
 
 #var chasing_target = false
 enum State { PATROLLING, CHASING, IDLE, DEAD }
 
 var patrol_target: Vector2
 var detecting = false
+var factor = 0
 
 
 func _ready():
@@ -34,11 +35,14 @@ func _physics_process(delta):
 		State.CHASING:
 			var goal_pos = navigation_agent.get_next_path_position() - global_position
 			var distance_to_player = global_position.distance_to(target.global_position)
-
-			if distance_to_player > 5 * G.TS:
-				# TODO: debug this
-				var factor = 1.2
-				goal_pos += Vector2(goal_pos[0] + target.velocity[0] * factor, goal_pos[1] + target.velocity[1] * factor)
+			
+			var raycast_result = raycast_to_player()
+			if raycast_result and raycast_result["collider"].name == G.PLAYER_NAME:
+			# TODO: debug this
+				factor = G.custom_ceil(distance_to_player / 100, 0.9)
+				goal_pos += Vector2(
+					goal_pos[0] + target.velocity[0] * factor,
+					goal_pos[1] + target.velocity[1] * factor)
 				
 			move_to(goal_pos, chase_speed, chase_accel, delta)
 		State.PATROLLING:
@@ -54,19 +58,13 @@ func _physics_process(delta):
 			pass
 	
 	if detecting:
-		var space_state = get_world_2d().direct_space_state
-		var col_mask = 2
-		
-		# TODO: add max length to player detecting raycast
-		var query = PhysicsRayQueryParameters2D.create(global_position, target.global_position, col_mask)
-		var result = space_state.intersect_ray(query)
-		
-		# no collision returns empty dict
-		if result.size() == 0:
+		var raycast_result = raycast_to_player()
+		if not raycast_result:
 			return
 			
-		if result["collider"].name == G.PLAYER_NAME:
+		if raycast_result["collider"].name == G.PLAYER_NAME:
 			state = State.CHASING
+			modulate = Color(1, 1, 1)
 			chase_timer.start()
 			
 	debug_velocity_line.clear_points()
@@ -76,12 +74,26 @@ func _physics_process(delta):
 
 
 func _process(delta):
-	debug_text.text = "%s\n" % State.keys()[state]
-	debug_text.text += "%s" % G.round_to_dec(patrol_path_timer.time_left, 1)
+	if G.debug_mode:
+		debug_text.text = "%s\n" % G.round_to_dec(factor,1)
+		#debug_text.text = "%s\n" % State.keys()[state]
+		#debug_text.text += "%s" % G.round_to_dec(patrol_path_timer.time_left, 1)
 	
 	if global_position.distance_to(target.global_position) > 100 * G.TS:
 		queue_free()
 
+
+func raycast_to_player():
+	var space_state = get_world_2d().direct_space_state
+	var col_mask = 2
+
+	var query = PhysicsRayQueryParameters2D.create(global_position, target.global_position, col_mask)
+	var result = space_state.intersect_ray(query)
+	
+	if result.size() == 0:
+		return 0
+	
+	return result
 
 func move_to(pos, s, a, d):
 	var direction = pos.normalized()
@@ -104,6 +116,8 @@ func _on_player_vision_area_body_entered(body):
 
 func _on_chase_timer_timeout():
 	state = State.PATROLLING
+	modulate = Color(G.rng.randf_range(0.15, 0.45), 1, 1)
+	
 	detecting = false
 	print("gave up chasing")
 

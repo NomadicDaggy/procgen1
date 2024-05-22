@@ -4,24 +4,30 @@ extends Node2D
 @onready var enemies = $"./Enemies"
 @onready var enemy_spawn_timer = $EnemySpawnTimer
 
-const ENEMY_NOSPAWN_SIZE = 4
-const ENEMY_SPAWN_MAX_DISTANCE = 8
-const MAX_ENEMIES = 1
+var enemy_nospawn_size = 30
+var enemy_spawn_max_dist = 80
+var max_enemies = 200
+
 
 var enemy_scene = preload("res://scenes/enemy.tscn")
 
 func _ready():
 	enemy_spawn_timer.wait_time = 0.03
 	enemy_spawn_timer.autostart = true
+	
+	if G.debug_mode:
+		enemy_nospawn_size = 8
+		enemy_spawn_max_dist = 10
+		max_enemies = 5
 
 #func _on_map_map_ready():
 #	# spawn enemies
 #	while enemies.get_child_count() < 15:
-#		var x = G.rng.randi_range(-ENEMY_SPAWN_MAX_DISTANCE, ENEMY_SPAWN_MAX_DISTANCE)
-#		var y = G.rng.randi_range(-ENEMY_SPAWN_MAX_DISTANCE, ENEMY_SPAWN_MAX_DISTANCE)
+#		var x = G.rng.randi_range(-enemy_spawn_max_dist, enemy_spawn_max_dist)
+#		var y = G.rng.randi_range(-enemy_spawn_max_dist, enemy_spawn_max_dist)
 #		if (
-#			(x > -ENEMY_NOSPAWN_SIZE and x < ENEMY_NOSPAWN_SIZE) or
-#			(y > -ENEMY_NOSPAWN_SIZE and y < ENEMY_NOSPAWN_SIZE)):
+#			(x > -enemy_nospawn_size and x < enemy_nospawn_size) or
+#			(y > -enemy_nospawn_size and y < enemy_nospawn_size)):
 #				continue
 #		spawn_enemy(Vector2(x,y))
 
@@ -31,17 +37,19 @@ func spawn_enemy(pos: Vector2):
 	enemy.position += Vector2(pos[0], pos[1])
 	enemy.target = player
 	enemy.z_index = 500
+	enemy.modulate = Color(G.rng.randf_range(0.15, 0.45), 1, 1)
 	enemies.add_child(enemy)
 
 
 func _on_enemy_spawn_timer_timeout():
-	if enemies.get_child_count() >= MAX_ENEMIES:
+	if enemies.get_child_count() >= max_enemies:
 		return
 	
-	var r = ENEMY_SPAWN_MAX_DISTANCE * G.TS
-	var pos = Vector2(G.rng.randi_range(-r,r), G.rng.randi_range(-r,r))
+	var r = enemy_spawn_max_dist * G.TS
+	var p = player.global_position
+	var pos = Vector2(G.rng.randi_range( p[0] - r, p[0] + r ), G.rng.randi_range( p[1] - r, p[1] + r ))
 	
-	if pos.distance_to(player.global_position) < ENEMY_NOSPAWN_SIZE * G.TS:
+	if pos.distance_to(p) < enemy_nospawn_size * G.TS:
 		return
 		
 	spawn_enemy(pos)
