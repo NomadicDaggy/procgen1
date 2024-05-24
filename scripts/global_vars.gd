@@ -1,10 +1,12 @@
 extends Node
 
 # Tilesize in pixels
-const TS = 16.0
+const TS: float = 16.0
 
 # Chunksize in tiles
-const CS = 64
+const CS: int = 64
+
+const CS_PX = int(TS) * CS
 
 const PLAYER_NAME = "Player"
 

@@ -15,32 +15,60 @@ const MAX_ROOM_SIZE = 14
 
 @onready var buildings = $Buildings
 @onready var spawnarea = $Spawnarea
+@onready var player = $"../../Player"
+
+
+var generated_chunk_chunkcoords = []
+var buildings_generated = 0
+var buildings_local = []
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	
 	for i in range(-2,2):
 		for j in range(-2,2):
 			generate_chunk(Vector2i(i, j))
-	
 	call_deferred("nav_setup")
+	
+	print("buildings generated: ", buildings.get_child_count(), "  ", buildings_generated)
 
-
-func _process(delta):
-	pass
-
+func _physics_process(delta):
+	
+	if Engine.get_physics_frames() % 30 != 0:
+		return
+	
+	# generate chunks if any ungenerated are near player
+	var player_chunk_pos = Vector2i(
+		int(player.global_position.x) / G.CS_PX,
+		int(player.global_position.y) / G.CS_PX
+	)
+	var chunks_generated = 0
+	var single_chunk_to_gen: Vector2i
+	for chunk_x in range(player_chunk_pos[0]-2, player_chunk_pos[0]+2):
+		for chunk_y in range(player_chunk_pos[1]-2, player_chunk_pos[1]+2):
+			var candidate_chunk_coords = Vector2i(chunk_x, chunk_y)
+			if not generated_chunk_chunkcoords.has(candidate_chunk_coords):
+				single_chunk_to_gen = candidate_chunk_coords
+				break
+	if single_chunk_to_gen:
+		generate_chunk(single_chunk_to_gen)
+		# TODO: offset navigation baking or whatever causes the freeze (maybe it is generate_chunk() instead)
+		call_deferred("nav_setup")
 
 func nav_setup():
+	print("Baking navigation...")
 	navigation_region.bake_navigation_polygon()
 	map_ready.emit()
 
 
-func generate_chunk(offset_in_chunks: Vector2i):
-	print("generating chunk: ", offset_in_chunks)
+# chunk_coords are in chunk coordinates - i.e. how many chunks from origin
+func generate_chunk(chunk_coords: Vector2i):
+	#print("generating chunk: ", chunk_coords)
 	build_bg(
-		Vector2i(offset_in_chunks[0] * G.CS, offset_in_chunks[1] * G.CS), 	
-		Vector2i((offset_in_chunks[0] + 1) * G.CS, (offset_in_chunks[1] + 1) * G.CS))
+		Vector2i(chunk_coords[0] * G.CS, chunk_coords[1] * G.CS), 	
+		Vector2i((chunk_coords[0] + 1) * G.CS, (chunk_coords[1] + 1) * G.CS))
 	
-	var chunk_origin_tiles = offset_in_chunks * G.CS
+	var chunk_origin_tiles = chunk_coords * G.CS
 	# build buildings
 	for i in range(MAX_ROOMS):
 		var width = G.rng.randi_range(MIN_ROOM_SIZE, MAX_ROOM_SIZE)
@@ -49,6 +77,9 @@ func generate_chunk(offset_in_chunks: Vector2i):
 			G.rng.randi_range(0, G.CS),
 			G.rng.randi_range(0, G.CS))
 		build_room(width, height, chunk_origin_tiles + offset)
+		
+	generated_chunk_chunkcoords.append(chunk_coords)
+	#print(generated_chunk_chunkcoords)
 
 
 func build_room(width: int, height:int, offset: Vector2i):
@@ -56,25 +87,45 @@ func build_room(width: int, height:int, offset: Vector2i):
 	var collision_shape = CollisionShape2D.new()
 	collision_shape.shape = RectangleShape2D.new()
 	collision_shape.shape.size = Vector2((width + 1) * G.TS, (height + 1) * G.TS)
-	var area = Area2D.new()
-	area.position = Vector2(
+	var new_room_area2d = Area2D.new()
+	new_room_area2d.position = Vector2(
 		(offset[0] + (width / 2.0)) * G.TS,
 		(offset[1] + (height / 2.0)) * G.TS
 	)
-	area.add_child(collision_shape)
-	buildings.add_child(area)
+	new_room_area2d.add_child(collision_shape)
+	buildings.add_child(new_room_area2d)
 	
 	# check for overlap with existing areas
-	for building in buildings.get_children():
-		if area == building:
+	# TODO: this is increadibly expensive, we should only check
+	# for overlap within the new area
+	#
+	var wo = (width / 2) * G.TS
+	var ho = (height / 2) * G.TS
+	var areas_checked = 0
+	for building in buildings_local:
+		if new_room_area2d == building:
 			continue
-
-		if areas_overlap(building, area):
-			area.queue_free()
-			return
+		
+		# if new room overlaps with an existing building
+		var bp = building.position
+		var bs = building.get_child(0).shape.size
+		var np = new_room_area2d.position
+		if (
+			bp[0] + bs[0] <= np[0] - wo or
+			bp[0] - bs[0] >= np[0] + wo or
+			bp[1] + bs[1] <= np[1] - ho or
+			bp[1] - bs[1] >= np[1] + ho
+			):
+				continue
+		else:
+			areas_checked += 1
+			if areas_overlap(building, new_room_area2d):
+				new_room_area2d.queue_free()
+				return
+	#print(areas_checked)
 	
-	if areas_overlap(spawnarea, area):
-			area.queue_free()
+	if areas_overlap(spawnarea, new_room_area2d):
+			new_room_area2d.queue_free()
 			return
 	
 	# box of walls with empty middle
@@ -92,6 +143,8 @@ func build_room(width: int, height:int, offset: Vector2i):
 	remove_wall(
 		G.rng.randi_range(1, width - 2) + offset[0],
 		[0, height - 1].pick_random() + offset[1])
+		
+	buildings_local.append(new_room_area2d)
 
 func areas_overlap(area1: Area2D, area2: Area2D) -> bool:
 	var shape1 = area1.get_child(0) as CollisionShape2D

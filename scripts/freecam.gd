@@ -16,24 +16,39 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
+	
 	if Input.is_action_just_released("toggle_camera"):
+		# Go back to player camera
 		if in_freecam:
 			in_freecam = false
 			player_info.visible = true
 			player_camera.make_current()
 			Engine.time_scale = 1.0
+			
+		# Go into freecam
 		else:
 			in_freecam = true
 			player_info.visible = false
 			make_current()
 			Engine.time_scale = 0.0
+	
 	if in_freecam:
 		if Input.is_action_just_released("scroll_up"):
 			print("zoom in")
-			zoom = clamp(zoom + Vector2(zoom_increment, zoom_increment), Vector2(zoom_increment, zoom_increment), Vector2(10.35, 10.35))
+			zoom = clamp(
+				zoom +
+				Vector2(zoom_increment, zoom_increment),
+				Vector2(zoom_increment, zoom_increment),
+				Vector2(10.35, 10.35)
+			)
 		if Input.is_action_just_released("scroll_down"):
 			print("zoom out")
-			zoom = clamp(zoom - Vector2(zoom_increment, zoom_increment), Vector2(zoom_increment, zoom_increment), Vector2(10.35, 10.35))
+			zoom = clamp(
+				zoom -
+				Vector2(zoom_increment, zoom_increment),
+				Vector2(zoom_increment, zoom_increment),
+				Vector2(10.35, 10.35)
+			)
 			
 		if Input.is_action_just_pressed("middle_mouse_btn"):
 			var ref = get_viewport().get_mouse_position()

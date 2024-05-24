@@ -20,7 +20,7 @@ animations = [{
 }]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_p6ogd"]
-radius = 6.0
+radius = 7.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_euqso"]
 radius = 142.056
@@ -44,7 +44,6 @@ sprite_frames = SubResource("SpriteFrames_w1hcc")
 animation = &"idle"
 
 [node name="Collision2DForWalls" type="CollisionShape2D" parent="."]
-visible = false
 z_index = 100
 shape = SubResource("CircleShape2D_p6ogd")
 
@@ -52,7 +51,6 @@ shape = SubResource("CircleShape2D_p6ogd")
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="Navigation"]
 radius = 20.0
-debug_enabled = true
 
 [node name="Timer" type="Timer" parent="Navigation"]
 wait_time = 0.1

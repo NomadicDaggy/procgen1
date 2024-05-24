@@ -24,6 +24,7 @@ func _ready():
 	player_info_text_changed.emit(str(shots_in_mag))
 	if G.debug_mode:
 		player_main_light.shadow_enabled = false
+		speed = 30000
 
 
 func _physics_process(delta):

@@ -20,17 +20,6 @@ func _ready():
 		enemy_spawn_max_dist = 10
 		max_enemies = 0
 
-#func _on_map_map_ready():
-#	# spawn enemies
-#	while enemies.get_child_count() < 15:
-#		var x = G.rng.randi_range(-enemy_spawn_max_dist, enemy_spawn_max_dist)
-#		var y = G.rng.randi_range(-enemy_spawn_max_dist, enemy_spawn_max_dist)
-#		if (
-#			(x > -enemy_nospawn_size and x < enemy_nospawn_size) or
-#			(y > -enemy_nospawn_size and y < enemy_nospawn_size)):
-#				continue
-#		spawn_enemy(Vector2(x,y))
-
 
 func spawn_enemy(pos: Vector2):
 	var enemy = enemy_scene.instantiate()
@@ -47,7 +36,10 @@ func _on_enemy_spawn_timer_timeout():
 	
 	var r = enemy_spawn_max_dist * G.TS
 	var p = player.global_position
-	var pos = Vector2(G.rng.randi_range( p[0] - r, p[0] + r ), G.rng.randi_range( p[1] - r, p[1] + r ))
+	var pos = Vector2(
+		G.rng.randi_range( p[0] - r, p[0] + r ),
+		G.rng.randi_range( p[1] - r, p[1] + r )
+	)
 	
 	if pos.distance_to(p) < enemy_nospawn_size * G.TS:
 		return
