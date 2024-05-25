@@ -6,13 +6,19 @@
 extends Area2D
 
 var direction = Vector2.ZERO
-var bullet_speed = 850
+var bullet_speed = 1000
+@export var shooter: CharacterBody2D
 
 func _ready():
 	z_index = 600
 
 func _physics_process(delta):
 	position += direction * delta * bullet_speed
+	
+	var ray_result = G.raycast_to_pos(global_position, shooter.global_position, 7)
+	if ray_result and ray_result["collider"].is_in_group("shootable"):
+		_on_body_entered(ray_result["collider"])
+	
 
 func _on_body_entered(body):
 	if body.is_in_group("shootable"):

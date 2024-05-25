@@ -23,6 +23,7 @@ func _ready():
 
 func spawn_enemy(pos: Vector2):
 	var enemy = enemy_scene.instantiate()
+	enemy.name = "ENEMY"
 	enemy.position += Vector2(pos[0], pos[1])
 	enemy.target = player
 	enemy.z_index = 500

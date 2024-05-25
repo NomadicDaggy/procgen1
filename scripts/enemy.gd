@@ -57,7 +57,7 @@ func _physics_process(delta):
 			pass
 	
 	if detecting:
-		var raycast_result = raycast_to_player()
+		var raycast_result = G.raycast_to_pos(global_position, target.global_position, 2)
 		if not raycast_result:
 			return
 			
@@ -80,19 +80,6 @@ func _process(_delta):
 	
 	if global_position.distance_to(target.global_position) > 100 * G.TS:
 		queue_free()
-
-
-func raycast_to_player():
-	var space_state = get_world_2d().direct_space_state
-	var col_mask = 2
-
-	var query = PhysicsRayQueryParameters2D.create(global_position, target.global_position, col_mask)
-	var result = space_state.intersect_ray(query)
-	
-	if result.size() == 0:
-		return 0
-	
-	return result
 
 func move_to(pos, s, a, d):
 	var direction = pos.normalized()

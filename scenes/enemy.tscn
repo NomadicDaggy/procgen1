@@ -31,7 +31,7 @@ font_size = 8
 shadow_size = 0
 
 [node name="Enemy" type="CharacterBody2D" groups=["shootable"]]
-collision_layer = 36
+collision_layer = 100
 collision_mask = 33
 motion_mode = 1
 slide_on_ceiling = false

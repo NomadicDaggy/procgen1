@@ -65,6 +65,7 @@ func try_shoot():
 	shot_light_timer.start()
 
 	var bullet = BULLET.instantiate()
+	bullet.shooter = self
 	bullet.position = position
 	bullet.direction = (get_global_mouse_position() - global_position).normalized()
 	bullet.rotation = bullet.direction.angle() + PI/2
