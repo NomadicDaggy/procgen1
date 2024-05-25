@@ -32,7 +32,7 @@ func _ready():
 	
 	print("buildings generated: ", buildings.get_child_count(), "  ", buildings_generated)
 
-func _physics_process(delta):
+func _physics_process(_delta):
 	
 	if Engine.get_physics_frames() % 30 != 0:
 		return
@@ -42,7 +42,6 @@ func _physics_process(delta):
 		int(player.global_position.x) / G.CS_PX,
 		int(player.global_position.y) / G.CS_PX
 	)
-	var chunks_generated = 0
 	var single_chunk_to_gen: Vector2i
 	for chunk_x in range(player_chunk_pos[0]-2, player_chunk_pos[0]+2):
 		for chunk_y in range(player_chunk_pos[1]-2, player_chunk_pos[1]+2):
@@ -101,7 +100,7 @@ func build_room(width: int, height:int, offset: Vector2i):
 	#
 	var wo = (width / 2) * G.TS
 	var ho = (height / 2) * G.TS
-	var areas_checked = 0
+
 	for building in buildings_local:
 		if new_room_area2d == building:
 			continue
@@ -118,7 +117,6 @@ func build_room(width: int, height:int, offset: Vector2i):
 			):
 				continue
 		else:
-			areas_checked += 1
 			if areas_overlap(building, new_room_area2d):
 				new_room_area2d.queue_free()
 				return

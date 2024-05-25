@@ -2,17 +2,21 @@ extends Area2D
 
 signal self_destruct
 
-@export var spawnTimer: Timer
+@onready var spawn_timer = $SpawnTimer
 
 @onready var timer = $Timer
 
 func _on_body_entered(body):
 	# Got stuck in wall or smth
+	# Check only shortly after spawning
 	if body.name != G.PLAYER_NAME:
-		if spawnTimer.is_stopped():
+		
+		if spawn_timer.is_stopped():
 			return
-		print("spawned in wall, destructing")
-		get_parent().queue_free()
+		
+		# If in wall, destruct whole enemy
+		self_destruct.emit()
+		
 		return
 	
 	print("You died!")

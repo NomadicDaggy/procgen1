@@ -13,7 +13,8 @@ const BULLET = preload("res://scenes/bullet.tscn")
 @onready var player_main_light = $PointLight2D
 
 
-@export var speed = 7000
+@export var speed = 125
+@export var accel = 8
 @export var dead = false
 
 const MAG_CAPACITY = 7
@@ -24,13 +25,14 @@ func _ready():
 	player_info_text_changed.emit(str(shots_in_mag))
 	if G.debug_mode:
 		player_main_light.shadow_enabled = false
-		speed = 30000
+		speed = 500
+		accel = 20
 
 
 func _physics_process(delta):
 	var direction = Input.get_vector("move_left", "move_right", "move_up", "move_down")
 	direction = direction.normalized()
-	velocity = direction * speed * delta
+	velocity = velocity.lerp(direction * speed, accel * delta)
 	
 	if direction == Vector2(0,0):
 		animated_sprite_2d.pause()

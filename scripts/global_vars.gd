@@ -17,6 +17,3 @@ var rng = RandomNumberGenerator.new()
 
 func round_to_dec(num, digit) -> float:
 	return round(num * pow(10.0, digit)) / pow(10.0, digit)
-	
-func custom_ceil(num, ceil) -> float:
-	return ceil if num > ceil else num

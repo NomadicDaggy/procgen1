@@ -20,7 +20,7 @@ animations = [{
 }]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_p6ogd"]
-radius = 7.0
+radius = 5.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_euqso"]
 radius = 142.056
@@ -40,10 +40,12 @@ script = ExtResource("1_habw5")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 light_mask = 3
+scale = Vector2(0.8, 0.8)
 sprite_frames = SubResource("SpriteFrames_w1hcc")
 animation = &"idle"
 
 [node name="Collision2DForWalls" type="CollisionShape2D" parent="."]
+visible = false
 z_index = 100
 shape = SubResource("CircleShape2D_p6ogd")
 
@@ -56,9 +58,8 @@ radius = 20.0
 wait_time = 0.1
 autostart = true
 
-[node name="Killzone" parent="." node_paths=PackedStringArray("spawnTimer") instance=ExtResource("2_mx8rb")]
+[node name="Killzone" parent="." instance=ExtResource("2_mx8rb")]
 collision_layer = 0
-spawnTimer = NodePath("../PatrolPathTimer")
 
 [node name="Collision2DForPlayer" type="CollisionShape2D" parent="Killzone"]
 visible = false
@@ -79,6 +80,10 @@ autostart = true
 [node name="ChaseTimer" type="Timer" parent="."]
 wait_time = 10.0
 
+[node name="SpawnTimer" type="Timer" parent="."]
+one_shot = true
+autostart = true
+
 [node name="DebugText" type="Label" parent="."]
 offset_left = -58.0
 offset_top = -237.0
@@ -95,6 +100,7 @@ default_color = Color(1, 1, 1, 0.729412)
 end_cap_mode = 1
 
 [connection signal="timeout" from="Navigation/Timer" to="." method="_on_timer_timeout"]
+[connection signal="self_destruct" from="Killzone" to="." method="_on_killzone_self_destruct"]
 [connection signal="body_entered" from="PlayerVisionArea" to="." method="_on_player_vision_area_body_entered"]
 [connection signal="body_exited" from="PlayerVisionArea" to="." method="_on_player_vision_area_body_exited"]
 [connection signal="timeout" from="PatrolPathTimer" to="." method="_on_patrol_path_timer_timeout"]

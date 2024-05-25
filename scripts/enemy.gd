@@ -72,7 +72,7 @@ func _physics_process(delta):
 	debug_velocity_line.global_rotation = 0
 
 
-func _process(delta):
+func _process(_delta):
 	if G.debug_mode:
 		debug_text.text = "%s\n" % G.round_to_dec(factor,1)
 		#debug_text.text = "%s\n" % State.keys()[state]
@@ -130,3 +130,6 @@ func _on_patrol_path_timer_timeout():
 		
 	if state != State.CHASING:
 		state = State.PATROLLING
+
+func _on_killzone_self_destruct():
+	queue_free()
