@@ -31,6 +31,10 @@ shader_language/size/initial_position_type=2
 window/size/viewport_width=1500
 window/size/viewport_height=1200
 
+[filesystem]
+
+import/blender/enabled=false
+
 [input]
 
 move_left={
@@ -90,6 +94,7 @@ middle_mouse_btn={
 2d_physics/layer_1="walls"
 2d_physics/layer_2="player"
 2d_physics/layer_3="enemy"
+2d_physics/layer_5="Extract"
 2d_physics/layer_6="bullet"
 2d_physics/layer_7="player_and_enemy"
 

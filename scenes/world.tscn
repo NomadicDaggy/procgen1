@@ -1,12 +1,12 @@
-[gd_scene load_steps=14 format=3 uid="uid://bg8vu4vo2pjsk"]
+[gd_scene load_steps=13 format=3 uid="uid://bg8vu4vo2pjsk"]
 
 [ext_resource type="Texture2D" uid="uid://x6fee8su30kj" path="res://assets/ts1.png" id="1_5lnke"]
 [ext_resource type="Script" path="res://scripts/game_manager.gd" id="1_uo411"]
 [ext_resource type="Script" path="res://scripts/map.gd" id="2_6xld6"]
 [ext_resource type="PackedScene" uid="uid://cbjk1vccn32a4" path="res://scenes/player.tscn" id="3_m2xfy"]
-[ext_resource type="Script" path="res://scripts/ui.gd" id="4_q5nlr"]
-[ext_resource type="FontFile" uid="uid://dmhp7vho1grrx" path="res://assets/FiraMono-Medium.ttf" id="5_vanpt"]
+[ext_resource type="PackedScene" uid="uid://63xjq4nv1uhx" path="res://scenes/extract.tscn" id="3_rlqbp"]
 [ext_resource type="Script" path="res://scripts/freecam.gd" id="7_kml0k"]
+[ext_resource type="PackedScene" uid="uid://gs723esr23mr" path="res://scenes/ui.tscn" id="7_qniic"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_ktfvu"]
 outlines = Array[PackedVector2Array]([PackedVector2Array(-26426, -16115, 29510, -16403, 29222, 13645, -25786, 12845)])
@@ -70,12 +70,6 @@ sources/0 = SubResource("TileSetAtlasSource_mpvrb")
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_0ncgd"]
 size = Vector2(144, 132)
 
-[sub_resource type="LabelSettings" id="LabelSettings_2hsjs"]
-font = ExtResource("5_vanpt")
-font_size = 14
-outline_size = 5
-outline_color = Color(0, 0, 0, 1)
-
 [node name="world" type="Node2D"]
 
 [node name="NavigationRegion2D" type="NavigationRegion2D" parent="."]
@@ -107,6 +101,9 @@ visible = false
 shape = SubResource("RectangleShape2D_0ncgd")
 debug_color = Color(0, 0.6, 0.701961, 0.419608)
 
+[node name="Extract" parent="NavigationRegion2D" instance=ExtResource("3_rlqbp")]
+position = Vector2(14, -13)
+
 [node name="GameManager" type="Node2D" parent="."]
 script = ExtResource("1_uo411")
 
@@ -116,22 +113,6 @@ autostart = true
 
 [node name="Enemies" type="Node2D" parent="GameManager"]
 z_index = 500
-
-[node name="UI" type="CanvasLayer" parent="."]
-script = ExtResource("4_q5nlr")
-
-[node name="Debug" type="Label" parent="UI"]
-offset_right = 40.0
-offset_bottom = 23.0
-label_settings = SubResource("LabelSettings_2hsjs")
-
-[node name="PlayerInfo" type="Label" parent="UI"]
-offset_left = 670.0
-offset_top = 341.0
-offset_right = 769.0
-offset_bottom = 411.0
-horizontal_alignment = 1
-vertical_alignment = 2
 
 [node name="CanvasModulate" type="CanvasModulate" parent="."]
 visible = false
@@ -151,8 +132,14 @@ rotation_smoothing_speed = 2.0
 zoom = Vector2(2, 2)
 script = ExtResource("7_kml0k")
 
+[node name="UI" parent="." node_paths=PackedStringArray("player") instance=ExtResource("7_qniic")]
+player = NodePath("../Player")
+
 [connection signal="bake_finished" from="NavigationRegion2D" to="UI" method="_on_navigation_region_2d_bake_finished"]
 [connection signal="navigation_polygon_changed" from="NavigationRegion2D" to="UI" method="_on_navigation_region_2d_navigation_polygon_changed"]
 [connection signal="map_ready" from="NavigationRegion2D/Map" to="GameManager" method="_on_map_map_ready"]
+[connection signal="extract_entered" from="NavigationRegion2D/Extract" to="GameManager" method="_on_extract_extract_entered"]
 [connection signal="timeout" from="GameManager/EnemySpawnTimer" to="GameManager" method="_on_enemy_spawn_timer_timeout"]
 [connection signal="player_info_text_changed" from="Player" to="UI" method="_on_player_player_info_text_changed"]
+
+[editable path="UI"]

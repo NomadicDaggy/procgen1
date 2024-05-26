@@ -46,3 +46,7 @@ func _on_enemy_spawn_timer_timeout():
 		return
 		
 	spawn_enemy(pos)
+
+
+func _on_extract_extract_entered():
+	print("CONGRATZ")

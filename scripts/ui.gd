@@ -3,16 +3,15 @@ extends CanvasLayer
 @onready var world = $".."
 @onready var debug: Label = $Debug
 @onready var navigation_region: NavigationRegion2D = $"../NavigationRegion2D"
-@onready var player_info: Node = $PlayerInfo
 @onready var enemies: Node2D = $"../GameManager/Enemies"
-@onready var player: CharacterBody2D = $"../Player"
+@onready var player_info = $PlayerInfo
+
+@export var player: CharacterBody2D
 
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	#player_info.set_position(player.position)
-	#follow_viewport_enabled = true
-	pass
+	call_deferred("_on_player_player_info_text_changed", str(player.shots_in_mag))
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -38,4 +37,5 @@ func _on_navigation_region_2d_navigation_polygon_changed():
 
 
 func _on_player_player_info_text_changed(text):
-	player_info.text = text
+	if player_info:
+		player_info.text = text
