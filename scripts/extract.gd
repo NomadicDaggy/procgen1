@@ -1,7 +1,5 @@
 extends Area2D
 
-signal extract
-
 @onready var timer = $Timer
 
 
@@ -20,4 +18,4 @@ func _on_body_exited(body):
 	
 
 func _on_timer_timeout():
-	extract.emit()
+	get_parent().get_parent().show_game_over()

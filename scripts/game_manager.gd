@@ -3,6 +3,10 @@ extends Node2D
 @onready var player = $"../Player"
 @onready var enemies = $"./Enemies"
 @onready var enemy_spawn_timer = $EnemySpawnTimer
+@onready var player_info = $"../UI/PlayerInfo"
+@onready var results_controls = $"../UI/ResultsControls"
+@onready var extracts = $Extracts
+
 
 var enemy_nospawn_size = 40
 var enemy_spawn_max_dist = 90
@@ -31,6 +35,12 @@ func spawn_enemy(pos: Vector2):
 	enemy.z_index = 500
 	enemy.modulate = Color(G.rng.randf_range(0.15, 0.45), 1, 1)
 	enemies.add_child(enemy)
+	
+	
+func show_game_over():
+	results_controls.visible = true
+	player_info.visible = false
+	Engine.time_scale = 0.0
 
 
 func _on_enemy_spawn_timer_timeout():

@@ -42,12 +42,6 @@ func _on_navigation_region_2d_navigation_polygon_changed():
 func _on_player_player_info_text_changed(text):
 	if player_info:
 		player_info.text = text
-
-
-func _on_extract_extract():
-	Engine.time_scale = 0.0
-	results_controls.visible = true
-	player_info.visible = false
 	
 
 func _on_restart_button_pressed():

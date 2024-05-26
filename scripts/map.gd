@@ -2,6 +2,8 @@ extends TileMap
 
 signal map_ready
 
+const EXTRACT = preload("res://scenes/extract.tscn")
+
 @export var navigation_region: NavigationRegion2D
 
 const WALL = Vector2i(2,0)
@@ -16,6 +18,8 @@ const MAX_ROOM_SIZE = 14
 @onready var buildings = $Buildings
 @onready var spawnarea = $Spawnarea
 @onready var player = $"../../Player"
+@onready var ui = $"../../UI"
+@onready var extracts = $"../../GameManager/Extracts"
 
 
 var generated_chunk_chunkcoords = []
@@ -32,10 +36,10 @@ func _ready():
 	
 	print("buildings generated: ", buildings.get_child_count(), "  ", buildings_generated)
 
+
 func _physics_process(_delta):
 	
-	if Engine.get_physics_frames() % 30 != 0:
-		return
+	#if Engine.get_physics_frames() % 30 != 0:
 	
 	# generate chunks if any ungenerated are near player
 	var player_chunk_pos = Vector2i(
@@ -51,8 +55,11 @@ func _physics_process(_delta):
 				break
 	if single_chunk_to_gen:
 		generate_chunk(single_chunk_to_gen)
+		
 		# TODO: offset navigation baking or whatever causes the freeze (maybe it is generate_chunk() instead)
+		# TODO: currently calling multiple times even when one is already running
 		call_deferred("nav_setup")
+
 
 func nav_setup():
 	print("Baking navigation...")
@@ -144,6 +151,18 @@ func build_room(width: int, height:int, offset: Vector2i):
 		
 	buildings_local.append(new_room_area2d)
 
+	# add extract
+	if G.rng.randi_range(0, 80) == 1:
+		
+		var extract = EXTRACT.instantiate()
+		extract.global_position = Vector2(
+			offset[0] * G.TS + G.TS + wo,
+			offset[1] * G.TS + G.TS + ho
+		)
+		print("adding extract at ", extract.global_position)
+		extracts.add_child(extract)
+
+
 func areas_overlap(area1: Area2D, area2: Area2D) -> bool:
 	var shape1 = area1.get_child(0) as CollisionShape2D
 	var shape2 = area2.get_child(0) as CollisionShape2D
@@ -158,6 +177,7 @@ func areas_overlap(area1: Area2D, area2: Area2D) -> bool:
 	var rect2_aabb = Rect2(transform2.origin, rect2.size).abs()
 	return rect1_aabb.intersects(rect2_aabb)
 
+
 func build_bg(top_left: Vector2i, bottom_right: Vector2i):
 	for x in range(top_left[0], bottom_right[0]):
 		assert (bottom_right[0] - top_left[0] == G.CS)
@@ -165,14 +185,18 @@ func build_bg(top_left: Vector2i, bottom_right: Vector2i):
 			assert (bottom_right[1] - top_left[1] == G.CS)
 			set_bg(x, y)
 
+
 func set_bg(x, y):
 	set_cell(1, Vector2i(x, y), 0, BG)
 	
+
 func remove_bg(x, y):
 	set_cell(1, Vector2i(x, y), -1, BG)
 
+
 func set_wall(x, y):
 	set_cell(0, Vector2i(x, y), 0, WALL)
+
 
 func remove_wall(x, y):
 	set_cell(0, Vector2i(x, y), -1, WALL)

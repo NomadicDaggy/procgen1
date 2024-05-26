@@ -3,6 +3,8 @@ extends Camera2D
 @export var in_freecam = false
 @onready var player_camera = $"../Player/Camera2D"
 @onready var player_info = $"../UI/PlayerInfo"
+@onready var player_light = $"../Player/PointLight2D"
+
 
 const zoom_increment = 0.15
 
@@ -23,6 +25,7 @@ func _process(_delta):
 			in_freecam = false
 			player_info.visible = true
 			player_camera.make_current()
+			player_light.shadow_enabled = true
 			Engine.time_scale = 1.0
 			
 		# Go into freecam
@@ -30,11 +33,11 @@ func _process(_delta):
 			in_freecam = true
 			player_info.visible = false
 			make_current()
+			player_light.shadow_enabled = false
 			Engine.time_scale = 0.0
 	
 	if in_freecam:
 		if Input.is_action_just_released("scroll_up"):
-			print("zoom in")
 			zoom = clamp(
 				zoom +
 				Vector2(zoom_increment, zoom_increment),
@@ -42,7 +45,6 @@ func _process(_delta):
 				Vector2(10.35, 10.35)
 			)
 		if Input.is_action_just_released("scroll_down"):
-			print("zoom out")
 			zoom = clamp(
 				zoom -
 				Vector2(zoom_increment, zoom_increment),
