@@ -138,8 +138,9 @@ player = NodePath("../Player")
 [connection signal="bake_finished" from="NavigationRegion2D" to="UI" method="_on_navigation_region_2d_bake_finished"]
 [connection signal="navigation_polygon_changed" from="NavigationRegion2D" to="UI" method="_on_navigation_region_2d_navigation_polygon_changed"]
 [connection signal="map_ready" from="NavigationRegion2D/Map" to="GameManager" method="_on_map_map_ready"]
-[connection signal="extract_entered" from="NavigationRegion2D/Extract" to="GameManager" method="_on_extract_extract_entered"]
+[connection signal="extract" from="NavigationRegion2D/Extract" to="UI" method="_on_extract_extract"]
 [connection signal="timeout" from="GameManager/EnemySpawnTimer" to="GameManager" method="_on_enemy_spawn_timer_timeout"]
+[connection signal="player_died" from="Player" to="UI" method="_on_player_player_died"]
 [connection signal="player_info_text_changed" from="Player" to="UI" method="_on_player_player_info_text_changed"]
 
 [editable path="UI"]

@@ -15,6 +15,8 @@ script = ExtResource("1_gobil")
 [node name="Debug" type="Label" parent="."]
 offset_right = 40.0
 offset_bottom = 23.0
+text = "test
+debug"
 label_settings = SubResource("LabelSettings_iygm6")
 
 [node name="PlayerInfo" type="Label" parent="."]
@@ -22,5 +24,45 @@ offset_left = 670.0
 offset_top = 341.0
 offset_right = 769.0
 offset_bottom = 411.0
+text = "7"
 horizontal_alignment = 1
 vertical_alignment = 2
+
+[node name="ResultsControls" type="Control" parent="."]
+visible = false
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="RestartButton" type="Button" parent="ResultsControls"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 681.5
+offset_top = 564.5
+offset_right = 778.5
+offset_bottom = 595.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "Start again!"
+
+[node name="ResultsInfo" type="Label" parent="ResultsControls"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 693.0
+offset_top = 496.675
+offset_right = 767.0
+offset_bottom = 519.675
+grow_horizontal = 2
+grow_vertical = 2
+text = "Congrats!"
+
+[connection signal="pressed" from="ResultsControls/RestartButton" to="." method="_on_restart_button_pressed"]

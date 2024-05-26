@@ -1,10 +1,16 @@
 extends Area2D
 
 signal self_destruct
+signal player_died
 
 @onready var spawn_timer = $SpawnTimer
 
 @onready var timer = $Timer
+
+var player: CharacterBody2D
+
+func _ready():
+	pass
 
 func _on_body_entered(body):
 	# Got stuck in wall or smth
@@ -22,11 +28,12 @@ func _on_body_entered(body):
 	print("You died!")
 	body.dead = true
 	Engine.time_scale = 0.1
+	
+	player = body
 	timer.start()
-	body.get_node("CollisionShape2D").queue_free()
+	
+	#body.get_node("CollisionShape2D").queue_free()
 
 
 func _on_timer_timeout():
-	print("timeout")
-	Engine.time_scale = 1.0
-	get_tree().reload_current_scene()
+	player.game_over()

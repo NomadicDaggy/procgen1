@@ -5,6 +5,9 @@ extends CanvasLayer
 @onready var navigation_region: NavigationRegion2D = $"../NavigationRegion2D"
 @onready var enemies: Node2D = $"../GameManager/Enemies"
 @onready var player_info = $PlayerInfo
+@onready var results_controls = $ResultsControls
+@onready var results_info = $ResultsControls/ResultsInfo
+
 
 @export var player: CharacterBody2D
 
@@ -39,3 +42,20 @@ func _on_navigation_region_2d_navigation_polygon_changed():
 func _on_player_player_info_text_changed(text):
 	if player_info:
 		player_info.text = text
+
+
+func _on_extract_extract():
+	Engine.time_scale = 0.0
+	results_controls.visible = true
+	player_info.visible = false
+	
+
+func _on_restart_button_pressed():
+	get_tree().reload_current_scene()
+	
+
+func _on_player_player_died():
+	Engine.time_scale = 0.0
+	results_controls.visible = true
+	player_info.visible = false
+	results_info.text = "YOU DIED!\n"

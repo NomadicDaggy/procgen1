@@ -1,6 +1,7 @@
 extends CharacterBody2D
 
 signal player_info_text_changed(text)
+signal player_died
 
 const BULLET = preload("res://scenes/bullet.tscn")
 
@@ -81,6 +82,9 @@ func try_reload():
 		return
 	reload_timer.start()
 	player_info_text_changed.emit("Reloading...")
+	
+func game_over():
+	player_died.emit()
 
 func _on_shot_timer_timeout():
 	round_in_chamber = true

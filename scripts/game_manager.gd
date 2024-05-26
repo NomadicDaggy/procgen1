@@ -12,6 +12,8 @@ var max_enemies = 300
 var enemy_scene = preload("res://scenes/enemy.tscn")
 
 func _ready():
+	Engine.time_scale = 1.0
+	
 	enemy_spawn_timer.wait_time = 0.03
 	enemy_spawn_timer.autostart = true
 	
@@ -46,7 +48,3 @@ func _on_enemy_spawn_timer_timeout():
 		return
 		
 	spawn_enemy(pos)
-
-
-func _on_extract_extract_entered():
-	print("CONGRATZ")
