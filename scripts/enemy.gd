@@ -83,7 +83,9 @@ func _physics_process(delta):
 			pass
 	
 	if trying_to_find_player_with_ray:
-		var raycast_result = G.raycast_to_pos(global_position, target.global_position, 8)
+		# collision mask is weird:
+		# the results of 2 to the power of (layer to be enabled - 1).
+		var raycast_result = G.raycast_to_pos(global_position, target.global_position, pow(2, 8-1))
 		if not raycast_result:
 			return
 		
