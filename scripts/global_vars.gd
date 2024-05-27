@@ -8,11 +8,9 @@ const TS: float = 16.0
 const CS: int = 64
 
 const CS_PX = int(TS) * CS
-
 const PLAYER_NAME = "Player"
 
 var debug_mode = false
-
 var rng = RandomNumberGenerator.new()
 
 

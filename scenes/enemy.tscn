@@ -1,8 +1,9 @@
-[gd_scene load_steps=9 format=3 uid="uid://cnvaqhi8co16a"]
+[gd_scene load_steps=10 format=3 uid="uid://cnvaqhi8co16a"]
 
 [ext_resource type="Script" path="res://scripts/enemy.gd" id="1_habw5"]
 [ext_resource type="Texture2D" uid="uid://cyga8hpi63heo" path="res://assets/enemy.png" id="1_ugilk"]
 [ext_resource type="PackedScene" uid="uid://7y0qcpweo22u" path="res://scenes/killzone.tscn" id="2_mx8rb"]
+[ext_resource type="FontFile" uid="uid://dmhp7vho1grrx" path="res://assets/FiraMono-Medium.ttf" id="4_jpyb8"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_5l27c"]
 atlas = ExtResource("1_ugilk")
@@ -23,11 +24,12 @@ animations = [{
 radius = 5.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_euqso"]
-radius = 142.056
+radius = 140.0
 
 [sub_resource type="LabelSettings" id="LabelSettings_fbo3k"]
-line_spacing = -2.0
-font_size = 8
+line_spacing = 0.0
+font = ExtResource("4_jpyb8")
+font_size = 20
 shadow_size = 0
 
 [node name="Enemy" type="CharacterBody2D" groups=["shootable"]]
@@ -62,7 +64,6 @@ autostart = true
 collision_layer = 0
 
 [node name="Collision2DForPlayer" type="CollisionShape2D" parent="Killzone"]
-visible = false
 shape = SubResource("CircleShape2D_p6ogd")
 
 [node name="PlayerVisionArea" type="Area2D" parent="."]
@@ -86,9 +87,11 @@ autostart = true
 
 [node name="DebugText" type="Label" parent="."]
 offset_left = -58.0
-offset_top = -237.0
-offset_right = 58.0
-offset_bottom = -10.0
+offset_top = -66.0
+offset_right = 342.0
+offset_bottom = 134.0
+scale = Vector2(0.29, 0.29)
+text = "test"
 label_settings = SubResource("LabelSettings_fbo3k")
 horizontal_alignment = 1
 vertical_alignment = 2
