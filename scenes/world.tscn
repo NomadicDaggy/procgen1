@@ -60,7 +60,7 @@ texture = ExtResource("1_5lnke")
 
 [sub_resource type="TileSet" id="TileSet_glrd7"]
 occlusion_layer_0/light_mask = 1
-physics_layer_0/collision_layer = 1
+physics_layer_0/collision_layer = 129
 physics_layer_0/collision_mask = 7
 navigation_layer_0/layers = 1
 sources/0 = SubResource("TileSetAtlasSource_mpvrb")
@@ -118,6 +118,7 @@ color = Color(0.4, 0.4, 0.4, 1)
 
 [node name="Player" parent="." instance=ExtResource("3_m2xfy")]
 z_index = 1000
+collision_layer = 194
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
 zoom = Vector2(2.735, 2.735)

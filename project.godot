@@ -98,6 +98,7 @@ middle_mouse_btn={
 2d_physics/layer_5="Extract"
 2d_physics/layer_6="bullet"
 2d_physics/layer_7="player_and_enemy"
+2d_physics/layer_8="player_and_wall"
 
 [physics]
 

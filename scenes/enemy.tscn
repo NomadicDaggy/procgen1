@@ -105,6 +105,5 @@ end_cap_mode = 1
 [connection signal="timeout" from="Navigation/Timer" to="." method="_on_timer_timeout"]
 [connection signal="self_destruct" from="Killzone" to="." method="_on_killzone_self_destruct"]
 [connection signal="body_entered" from="PlayerVisionArea" to="." method="_on_player_vision_area_body_entered"]
-[connection signal="body_exited" from="PlayerVisionArea" to="." method="_on_player_vision_area_body_exited"]
 [connection signal="timeout" from="PatrolPathTimer" to="." method="_on_patrol_path_timer_timeout"]
 [connection signal="timeout" from="ChaseTimer" to="." method="_on_chase_timer_timeout"]

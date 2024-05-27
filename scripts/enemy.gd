@@ -83,10 +83,10 @@ func _physics_process(delta):
 			pass
 	
 	if trying_to_find_player_with_ray:
-		var raycast_result = G.raycast_to_pos(global_position, target.global_position, 2)
+		var raycast_result = G.raycast_to_pos(global_position, target.global_position, 8)
 		if not raycast_result:
 			return
-			
+		
 		if (raycast_result["collider"].name == G.PLAYER_NAME) and (player_detection_level == 1.0):
 			state = State.CHASING
 			chase_timer.start()
@@ -99,7 +99,7 @@ func _physics_process(delta):
 
 func _process(_delta):
 	#if G.debug_mode:
-	#debug_text.text = "%s\n" % G.round_to_dec(player_detection_level,3)
+	debug_text.text = "%s\n" % G.round_to_dec(player_detection_level,3)
 		#debug_text.text = "%s\n" % G.round_to_dec(factor,1)
 		#debug_text.text = "%s\n" % State.keys()[state]
 		#debug_text.text += "%s" % G.round_to_dec(patrol_path_timer.time_left, 1)
