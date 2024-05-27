@@ -1,10 +1,10 @@
 extends Node2D
 
 const BULLET = preload("res://scenes/bullet.tscn")
-const MAG_CAPACITY = 7
 
-var shots_in_mag: int = MAG_CAPACITY
-var round_in_chamber = true
+var mag_capacity: int
+var shots_in_mag: int
+var round_in_chamber: bool
 
 @onready var shot_timer = $ShotTimer
 @onready var shot_light = $ShotLight
@@ -14,6 +14,14 @@ var round_in_chamber = true
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	mag_capacity = 2
+	shots_in_mag = mag_capacity
+	round_in_chamber = true
+
+	reload_timer.wait_time = 1.5
+	shot_timer.wait_time = 0.2
+
+	
 	UI.set_player_info_text(str(shots_in_mag))
 	pass
 
@@ -52,7 +60,7 @@ func try_shoot(bullet_container, player):
 	UI.set_player_info_text(str(shots_in_mag))
 
 func try_reload():
-	if not reload_timer.is_stopped() or shots_in_mag == MAG_CAPACITY:
+	if not reload_timer.is_stopped() or shots_in_mag == mag_capacity:
 		return
 	reload_timer.start()
 	UI.set_player_info_text("Reloading...")
@@ -65,7 +73,7 @@ func _on_shot_light_timer_timeout():
 	shot_light.enabled = false
 
 func _on_reload_timer_timeout():
-	shots_in_mag = MAG_CAPACITY
+	shots_in_mag = mag_capacity
 	round_in_chamber = true
 	reload_timer.stop()
 	UI.set_player_info_text(str(shots_in_mag))
