@@ -2,7 +2,6 @@ extends Camera2D
 
 @export var in_freecam = false
 @onready var player_camera = $"../Player/Camera2D"
-@onready var player_info = $"../UI/PlayerInfo"
 @onready var player_light = $"../Player/PointLight2D"
 
 
@@ -23,7 +22,7 @@ func _process(_delta):
 		# Go back to player camera
 		if in_freecam:
 			in_freecam = false
-			player_info.visible = true
+			UI.player_info.visible = true
 			player_camera.make_current()
 			player_light.shadow_enabled = true
 			Engine.time_scale = 1.0
@@ -31,7 +30,7 @@ func _process(_delta):
 		# Go into freecam
 		else:
 			in_freecam = true
-			player_info.visible = false
+			UI.player_info.visible = false
 			make_current()
 			player_light.shadow_enabled = false
 			Engine.time_scale = 0.0

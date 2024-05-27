@@ -52,22 +52,3 @@ shadow_color = Color(1, 1, 1, 1)
 shadow_filter_smooth = 1.5
 texture = ExtResource("3_5nuo1")
 texture_scale = 8.37
-
-[node name="ShotTimer" type="Timer" parent="."]
-wait_time = 0.35
-
-[node name="ShotLight" type="PointLight2D" parent="."]
-enabled = false
-color = Color(0.929412, 0.321569, 0.0470588, 1)
-energy = 0.7
-texture = ExtResource("3_5nuo1")
-
-[node name="ShotLightTimer" type="Timer" parent="ShotLight"]
-wait_time = 0.05
-
-[node name="ReloadTimer" type="Timer" parent="."]
-wait_time = 2.0
-
-[connection signal="timeout" from="ShotTimer" to="." method="_on_shot_timer_timeout"]
-[connection signal="timeout" from="ShotLight/ShotLightTimer" to="." method="_on_shot_light_timer_timeout"]
-[connection signal="timeout" from="ReloadTimer" to="." method="_on_reload_timer_timeout"]

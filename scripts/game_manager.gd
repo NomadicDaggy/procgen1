@@ -3,8 +3,6 @@ extends Node2D
 @onready var player = $"../Player"
 @onready var enemies = $"./Enemies"
 @onready var enemy_spawn_timer = $EnemySpawnTimer
-@onready var player_info = $"../UI/PlayerInfo"
-@onready var results_controls = $"../UI/ResultsControls"
 @onready var extracts = $Extracts
 
 
@@ -38,8 +36,7 @@ func spawn_enemy(pos: Vector2):
 	
 	
 func show_game_over():
-	results_controls.visible = true
-	player_info.visible = false
+	UI.game_over()
 	Engine.time_scale = 0.0
 
 

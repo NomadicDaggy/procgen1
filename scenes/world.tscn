@@ -1,11 +1,10 @@
-[gd_scene load_steps=12 format=3 uid="uid://bg8vu4vo2pjsk"]
+[gd_scene load_steps=11 format=3 uid="uid://bg8vu4vo2pjsk"]
 
 [ext_resource type="Texture2D" uid="uid://x6fee8su30kj" path="res://assets/ts1.png" id="1_5lnke"]
 [ext_resource type="Script" path="res://scripts/game_manager.gd" id="1_uo411"]
 [ext_resource type="Script" path="res://scripts/map.gd" id="2_6xld6"]
 [ext_resource type="PackedScene" uid="uid://cbjk1vccn32a4" path="res://scenes/player.tscn" id="3_m2xfy"]
 [ext_resource type="Script" path="res://scripts/freecam.gd" id="7_kml0k"]
-[ext_resource type="PackedScene" uid="uid://gs723esr23mr" path="res://scenes/ui.tscn" id="7_qniic"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_ktfvu"]
 outlines = Array[PackedVector2Array]([PackedVector2Array(-26426, -16115, 29510, -16403, 29222, 13645, -25786, 12845)])
@@ -112,6 +111,8 @@ z_index = 500
 
 [node name="Extracts" type="Node2D" parent="GameManager"]
 
+[node name="PlayerProjectiles" type="Node2D" parent="GameManager"]
+
 [node name="CanvasModulate" type="CanvasModulate" parent="."]
 visible = false
 light_mask = 2
@@ -130,14 +131,6 @@ rotation_smoothing_speed = 2.0
 zoom = Vector2(2, 2)
 script = ExtResource("7_kml0k")
 
-[node name="UI" parent="." node_paths=PackedStringArray("player") instance=ExtResource("7_qniic")]
-player = NodePath("../Player")
-
-[connection signal="bake_finished" from="NavigationRegion2D" to="UI" method="_on_navigation_region_2d_bake_finished"]
-[connection signal="navigation_polygon_changed" from="NavigationRegion2D" to="UI" method="_on_navigation_region_2d_navigation_polygon_changed"]
+[connection signal="bake_finished" from="NavigationRegion2D" to="NavigationRegion2D/Map" method="_on_navigation_region_2d_bake_finished"]
 [connection signal="map_ready" from="NavigationRegion2D/Map" to="GameManager" method="_on_map_map_ready"]
 [connection signal="timeout" from="GameManager/EnemySpawnTimer" to="GameManager" method="_on_enemy_spawn_timer_timeout"]
-[connection signal="player_died" from="Player" to="UI" method="_on_player_player_died"]
-[connection signal="player_info_text_changed" from="Player" to="UI" method="_on_player_player_info_text_changed"]
-
-[editable path="UI"]

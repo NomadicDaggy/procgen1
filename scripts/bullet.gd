@@ -16,6 +16,8 @@ func _physics_process(delta):
 	position += direction * delta * bullet_speed
 	
 	# TODO: raycast is immediate, but bullet has flight time.
+	# Either way sometimes this causes enemy to be hit even bullet does not
+	# cross its path
 	var ray_result = G.raycast_to_pos(global_position, shooter.global_position, 7)
 	if ray_result and ray_result["collider"].is_in_group("shootable"):
 		_on_body_entered(ray_result["collider"])

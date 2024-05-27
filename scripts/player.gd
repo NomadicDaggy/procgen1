@@ -1,29 +1,30 @@
 extends CharacterBody2D
 
-signal player_info_text_changed(text)
 signal player_died
 
-const BULLET = preload("res://scenes/bullet.tscn")
+const DEFAULT_GUN = preload("res://scenes/default_gun.tscn")
+
+@export var speed: int 
+@export var accel: int
+@export var dead = false
+@export var ranged_weapon: Node2D
 
 @onready var game_manager = $"../GameManager"
 @onready var animated_sprite_2d = $AnimatedSprite2D
-@onready var shot_timer = $ShotTimer
-@onready var shot_light = $ShotLight
-@onready var shot_light_timer = $ShotLight/ShotLightTimer
-@onready var reload_timer = $ReloadTimer
 @onready var player_main_light = $PointLight2D
+@onready var player_projectiles = $"../GameManager/PlayerProjectiles"
 
-
-@export var speed = 125
-@export var accel = 8
-@export var dead = false
-
-const MAG_CAPACITY = 7
-var shots_in_mag: int = MAG_CAPACITY
-var round_in_chamber = true
 
 func _ready():
-	player_info_text_changed.emit(str(shots_in_mag))
+	UI.player = self
+	
+	speed = 125
+	accel = 8
+	
+	var gun = DEFAULT_GUN.instantiate()
+	add_child(gun)
+	ranged_weapon = gun
+	
 	if G.debug_mode:
 		player_main_light.shadow_enabled = false
 		speed = 500
@@ -45,55 +46,13 @@ func _physics_process(delta):
 	
 	if dead:
 		return
-	
-	if Input.get_action_strength("main_action"):
-		try_shoot()
-	if Input.get_action_strength("reload"):
-		try_reload()
-
-
-func try_shoot():
-	if shots_in_mag <= 0:
-		try_reload()
-		return
 		
-	if not round_in_chamber or not reload_timer.is_stopped():
-		return
-	
-	shot_timer.start()
-	shots_in_mag -= 1
-	shot_light.enabled = true
-	shot_light_timer.start()
+	if Input.get_action_strength("main_action"):
+		ranged_weapon.try_shoot(player_projectiles, self)
+	if Input.get_action_strength("reload"):
+		ranged_weapon.try_reload()
 
-	var bullet = BULLET.instantiate()
-	bullet.shooter = self
-	bullet.position = position
-	bullet.direction = (get_global_mouse_position() - global_position).normalized()
-	bullet.rotation = bullet.direction.angle() + PI/2
-	bullet.z_index = 1500
-	game_manager.add_child(bullet)
-	
-	# TODO: play shot sound
-	round_in_chamber = false
-	player_info_text_changed.emit(str(shots_in_mag))
-
-func try_reload():
-	if not reload_timer.is_stopped() or shots_in_mag == MAG_CAPACITY:
-		return
-	reload_timer.start()
-	player_info_text_changed.emit("Reloading...")
 	
 func game_over():
-	player_died.emit()
-
-func _on_shot_timer_timeout():
-	round_in_chamber = true
-
-func _on_shot_light_timer_timeout():
-	shot_light.enabled = false
-
-func _on_reload_timer_timeout():
-	shots_in_mag = MAG_CAPACITY
-	round_in_chamber = true
-	reload_timer.stop()
-	player_info_text_changed.emit(str(shots_in_mag))
+	Engine.time_scale = 0.0
+	UI.player_died()

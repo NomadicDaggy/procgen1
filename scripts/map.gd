@@ -18,7 +18,6 @@ const MAX_ROOM_SIZE = 14
 @onready var buildings = $Buildings
 @onready var spawnarea = $Spawnarea
 @onready var player = $"../../Player"
-@onready var ui = $"../../UI"
 @onready var extracts = $"../../GameManager/Extracts"
 
 
@@ -200,3 +199,8 @@ func set_wall(x, y):
 
 func remove_wall(x, y):
 	set_cell(0, Vector2i(x, y), -1, WALL)
+
+
+func _on_navigation_region_2d_bake_finished():
+	print("bake finished")
+	print(navigation_region.navigation_polygon)
