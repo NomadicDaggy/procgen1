@@ -4,6 +4,8 @@ extends Node2D
 @onready var enemies = $"./Enemies"
 @onready var enemy_spawn_timer = $EnemySpawnTimer
 @onready var extracts = $Extracts
+@onready var canvas_modulate = $"../CanvasModulate"
+
 
 
 var enemy_nospawn_size = 40
@@ -14,7 +16,8 @@ var max_enemies = 300
 var enemy_scene = preload("res://scenes/enemy.tscn")
 
 func _ready():
-	Engine.time_scale = 1.0
+	# Start paused
+	#pause_game()
 	
 	enemy_spawn_timer.wait_time = 0.03
 	enemy_spawn_timer.autostart = true
@@ -23,6 +26,13 @@ func _ready():
 		enemy_nospawn_size = 8
 		enemy_spawn_max_dist = 10
 		max_enemies = 0
+
+
+func _process(_delta):
+	if canvas_modulate.visible and not G.game_paused:
+		unpause_game()
+	if UI.start_controls.visible:
+		pause_game()
 
 
 func spawn_enemy(pos: Vector2):
@@ -34,7 +44,19 @@ func spawn_enemy(pos: Vector2):
 	
 func show_game_over():
 	UI.game_over()
+	pause_game()
+
+ 
+func pause_game():
 	Engine.time_scale = 0.0
+	canvas_modulate.visible = true
+	G.game_paused = true
+
+
+func unpause_game():
+	Engine.time_scale = 1.0
+	canvas_modulate.visible = false
+	G.game_paused = false
 
 
 func _on_enemy_spawn_timer_timeout():

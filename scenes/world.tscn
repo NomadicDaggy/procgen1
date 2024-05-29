@@ -111,11 +111,6 @@ z_index = 500
 
 [node name="PlayerProjectiles" type="Node2D" parent="GameManager"]
 
-[node name="CanvasModulate" type="CanvasModulate" parent="."]
-visible = false
-light_mask = 2
-color = Color(0.4, 0.4, 0.4, 1)
-
 [node name="Player" parent="." instance=ExtResource("3_m2xfy")]
 z_index = 1000
 
@@ -127,6 +122,12 @@ rotation_smoothing_speed = 2.0
 [node name="Freecam" type="Camera2D" parent="."]
 zoom = Vector2(2, 2)
 script = ExtResource("7_kml0k")
+
+[node name="CanvasModulate" type="CanvasModulate" parent="."]
+light_mask = 0
+visibility_layer = 0
+z_index = 1000
+color = Color(0.4, 0.4, 0.4, 1)
 
 [connection signal="bake_finished" from="NavigationRegion2D" to="NavigationRegion2D/Map" method="_on_navigation_region_2d_bake_finished"]
 [connection signal="map_ready" from="NavigationRegion2D/Map" to="GameManager" method="_on_map_map_ready"]

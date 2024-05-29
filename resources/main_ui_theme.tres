@@ -1,0 +1,8 @@
+[gd_resource type="Theme" load_steps=2 format=3 uid="uid://ko77oq5p32gu"]
+
+[ext_resource type="FontFile" uid="uid://dmhp7vho1grrx" path="res://assets/FiraMono-Medium.ttf" id="1_m2mlb"]
+
+[resource]
+default_base_scale = 0.2
+default_font = ExtResource("1_m2mlb")
+default_font_size = 20

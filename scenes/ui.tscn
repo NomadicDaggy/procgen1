@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://gs723esr23mr"]
+[gd_scene load_steps=6 format=3 uid="uid://gs723esr23mr"]
 
 [ext_resource type="FontFile" uid="uid://dmhp7vho1grrx" path="res://assets/FiraMono-Medium.ttf" id="1_06co6"]
 [ext_resource type="Script" path="res://scripts/ui.gd" id="1_gobil"]
+[ext_resource type="Theme" uid="uid://ko77oq5p32gu" path="res://resources/main_ui_theme.tres" id="3_pk1qp"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_iygm6"]
 font = ExtResource("1_06co6")
@@ -9,10 +10,22 @@ font_size = 14
 outline_size = 5
 outline_color = Color(0, 0, 0, 1)
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_a3mb4"]
+bg_color = Color(0.862745, 0.788235, 0.607843, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+expand_margin_left = 10.0
+expand_margin_top = 5.0
+expand_margin_right = 10.0
+expand_margin_bottom = 5.0
+
 [node name="UI" type="CanvasLayer"]
 script = ExtResource("1_gobil")
 
 [node name="Debug" type="Label" parent="."]
+visible = false
 offset_right = 40.0
 offset_bottom = 23.0
 text = "test
@@ -20,6 +33,7 @@ debug"
 label_settings = SubResource("LabelSettings_iygm6")
 
 [node name="PlayerInfo" type="Label" parent="."]
+visible = false
 offset_left = 670.0
 offset_top = 341.0
 offset_right = 769.0
@@ -65,4 +79,73 @@ grow_horizontal = 2
 grow_vertical = 2
 text = "Congrats!"
 
+[node name="StartControls" type="Control" parent="."]
+z_index = 1000
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="StartControls"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -381.0
+offset_top = -152.0
+offset_right = 408.0
+offset_bottom = -50.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("3_pk1qp")
+text = "You wake up and you are certain that shit is about to go down.
+
+You'll probably want to find a green blinky boi."
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="Label2" type="Label" parent="StartControls"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -156.0
+offset_top = -20.16
+offset_right = 156.0
+offset_bottom = 116.841
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("3_pk1qp")
+text = "WASD - movement
+Mouse - aim and fire
+
+C - debug camera (scroll and pan with MMB)"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="StartGameButton" type="Button" parent="StartControls"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -64.0
+offset_top = 150.0
+offset_right = 64.0
+offset_bottom = 183.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("3_pk1qp")
+theme_override_colors/font_color = Color(0.682353, 0.309804, 0.356863, 1)
+theme_override_styles/normal = SubResource("StyleBoxFlat_a3mb4")
+text = "Wake Up Samurai"
+
 [connection signal="pressed" from="ResultsControls/RestartButton" to="." method="_on_restart_button_pressed"]
+[connection signal="pressed" from="StartControls/StartGameButton" to="." method="_on_start_game_button_pressed"]

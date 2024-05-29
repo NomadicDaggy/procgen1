@@ -13,6 +13,8 @@ const DEFAULT_GUN = preload("res://scenes/default_gun.tscn")
 @onready var animated_sprite_2d = $AnimatedSprite2D
 @onready var player_main_light = $PointLight2D
 @onready var player_projectiles = $"../GameManager/PlayerProjectiles"
+@onready var on_spawn_timer = $OnSpawnTimer
+
 
 
 func _ready():
@@ -46,7 +48,10 @@ func _physics_process(delta):
 	
 	if dead:
 		return
-		
+	
+	if not on_spawn_timer.is_stopped():
+		return
+
 	if Input.get_action_strength("main_action"):
 		ranged_weapon.try_shoot(player_projectiles, self)
 	if Input.get_action_strength("reload"):
@@ -54,5 +59,5 @@ func _physics_process(delta):
 
 	
 func game_over():
-	Engine.time_scale = 0.0
+	game_manager.pause_game()
 	UI.player_died()

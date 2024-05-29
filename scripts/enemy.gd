@@ -100,17 +100,18 @@ func _physics_process(delta):
 
 
 func _process(_delta):
-	#if G.debug_mode:
-	debug_text.text = "%s\n" % G.round_to_dec(player_detection_level,3)
-		#debug_text.text = "%s\n" % G.round_to_dec(factor,1)
-		#debug_text.text = "%s\n" % State.keys()[state]
-		#debug_text.text += "%s" % G.round_to_dec(patrol_path_timer.time_left, 1)
 	
 	# If enemy is far from player, delete it to let a new one spawn closer.
 	if global_position.distance_to(target.global_position) > 100 * G.TS:
 		queue_free()
 
 	modulate = Color(player_detection_level, 1, 1)
+	
+	#if G.debug_mode:
+	#debug_text.text = "%s\n" % G.round_to_dec(player_detection_level,3)
+	#debug_text.text = "%s\n" % G.round_to_dec(factor,1)
+	#debug_text.text = "%s\n" % State.keys()[state]
+	#debug_text.text += "%s" % G.round_to_dec(patrol_path_timer.time_left, 1)
 
 
 func move_to(pos, s, a, d):

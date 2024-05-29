@@ -11,11 +11,13 @@ const CS_PX = int(TS) * CS
 const PLAYER_NAME = "Player"
 
 var debug_mode = false
+var game_paused = true
 var rng = RandomNumberGenerator.new()
 
 
 func round_to_dec(num, digit) -> float:
 	return round(num * pow(10.0, digit)) / pow(10.0, digit)
+
 
 func raycast_to_pos(from, to, collider_mask):
 	var space_state = get_world_2d().direct_space_state

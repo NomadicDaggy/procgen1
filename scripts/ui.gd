@@ -3,19 +3,22 @@ extends CanvasLayer
 @onready var world: Node2D #= $"../world"
 @onready var navigation_region: NavigationRegion2D #= $"../world/NavigationRegion2D"
 @onready var enemies: Node2D #= $"../world/GameManager/Enemies"
+@onready var game_manager: Node2D
 
 @onready var debug: Label = $Debug
 @onready var player_info = $PlayerInfo
 @onready var results_controls = $ResultsControls
 @onready var results_info = $ResultsControls/ResultsInfo
+@onready var start_controls = $StartControls
 
 
 @export var player: CharacterBody2D
 
 
 func _ready():
-	#call_deferred("set_player_info_text", str(player.ranged_weapon.shots_in_mag))
-	pass
+	start_controls.visible = true
+	player_info.visible = false
+	results_controls.visible = false
 
 
 func _process(_delta):
@@ -25,6 +28,7 @@ func _process(_delta):
 		world = get_node("../world")
 		navigation_region = get_node("../world/NavigationRegion2D")
 		enemies = get_node("../world/GameManager/Enemies")
+		game_manager = get_node("../world/GameManager")
 	
 	update_hud()
 	
@@ -60,11 +64,15 @@ func game_over():
 	results_info.text = "CONGRATS!\n"
 
 
-# Access object and reassign it to the correct node if needed
-#func _aor(object, node_name):
-
-
 func _on_restart_button_pressed():
 	get_parent().get_tree().reload_current_scene()
 	results_controls.visible = false
 	player_info.visible = true
+	G.game_paused = false
+
+
+func _on_start_game_button_pressed():
+	results_controls.visible = false
+	player_info.visible = true
+	start_controls.visible = false
+	game_manager.unpause_game()
