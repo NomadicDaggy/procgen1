@@ -13,6 +13,10 @@ func _ready():
 	pass
 
 func _on_body_entered(body):
+
+	if G.godmode:
+		return
+
 	# Got stuck in wall or smth
 	# Check only shortly after spawning
 	if body.name != G.PLAYER_NAME:

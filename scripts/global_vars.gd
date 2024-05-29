@@ -7,12 +7,22 @@ const TS: float = 16.0
 # Chunksize in tiles
 const CS: int = 64
 
+# Chunksize in pixels
 const CS_PX = int(TS) * CS
+
 const PLAYER_NAME = "Player"
 
-var debug_mode = false
+# ---------------------------
+var debug_mode = false   # --
+# ---------------------------
+
+var godmode = false
 var game_paused = true
 var rng = RandomNumberGenerator.new()
+
+func _ready():
+	if debug_mode:
+		godmode = true
 
 
 func round_to_dec(num, digit) -> float:

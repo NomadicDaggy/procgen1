@@ -9,9 +9,10 @@ const EXTRACT = preload("res://scenes/extract.tscn")
 const WALL = Vector2i(2,0)
 const BG = Vector2i(1,0)
 
-const MAX_ROOMS = 60
+const MAX_ROOMS_PER_CHUNK = 60
 const MIN_ROOM_SIZE = 6
 const MAX_ROOM_SIZE = 14
+const MAX_ROOMS_TO_GEN_PER_FRAME = 3
 #const MIN_ROOM_OFFSET = -60
 #const MAX_ROOM_OFFSET = 60
 
@@ -24,13 +25,16 @@ const MAX_ROOM_SIZE = 14
 var generated_chunk_chunkcoords = []
 var buildings_generated = 0
 var buildings_local = []
+var rooms_left_in_batch = 0
+var chunk_queue = []
+var chunk_in_generation
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	
 	for i in range(-2,2):
 		for j in range(-2,2):
-			generate_chunk(Vector2i(i, j))
+			generate_chunk_instant(Vector2i(i, j))
 	call_deferred("nav_setup")
 	
 	print("buildings generated: ", buildings.get_child_count(), "  ", buildings_generated)
@@ -45,19 +49,61 @@ func _physics_process(_delta):
 		int(player.global_position.x) / G.CS_PX,
 		int(player.global_position.y) / G.CS_PX
 	)
-	var single_chunk_to_gen: Vector2i
-	for chunk_x in range(player_chunk_pos[0]-2, player_chunk_pos[0]+2):
-		for chunk_y in range(player_chunk_pos[1]-2, player_chunk_pos[1]+2):
-			var candidate_chunk_coords = Vector2i(chunk_x, chunk_y)
-			if not generated_chunk_chunkcoords.has(candidate_chunk_coords):
-				single_chunk_to_gen = candidate_chunk_coords
-				break
-	if single_chunk_to_gen:
-		generate_chunk(single_chunk_to_gen)
+	
+	# single chunk to generate
+	_add_chunks_that_need_generation(player_chunk_pos)
+
+	# Add a chunk to the room gen queue and prep background
+	if (
+		not chunk_in_generation
+		and rooms_left_in_batch == 0
+		and chunk_queue.size() > 0
+		):
+	
+		chunk_in_generation = chunk_queue.pop_front()
+		rooms_left_in_batch = MAX_ROOMS_PER_CHUNK
+
+		build_bg(
+			Vector2i(
+				chunk_in_generation[0] * G.CS,
+				chunk_in_generation[1] * G.CS),
+			Vector2i(
+				(chunk_in_generation[0] + 1) * G.CS,
+				(chunk_in_generation[1] + 1) * G.CS))
+
+		print("Starting chunkgen at ", chunk_in_generation)
+
+	# If no chunk needs to be generated and none are currently in generation,
+	# simply don't continue
+	elif not chunk_in_generation:
+		return
+	
+	
+	var chunk_origin_in_tiles = chunk_in_generation * G.CS
+
+	# Process rooms in batch
+	for room_frame_i in MAX_ROOMS_TO_GEN_PER_FRAME:
+
+		# If chunk just finished - reset for next chunk and break out
+		if rooms_left_in_batch == 0:
+			print("finished chunk")
+			generated_chunk_chunkcoords.append(chunk_in_generation)
+			chunk_in_generation = null
+			# TODO: offset navigation baking or whatever causes the freeze (maybe it is generate_chunk_instant() instead)
+			# TODO: currently calling multiple times even when one is already running
+			call_deferred("nav_setup")
+			break
 		
-		# TODO: offset navigation baking or whatever causes the freeze (maybe it is generate_chunk() instead)
-		# TODO: currently calling multiple times even when one is already running
-		call_deferred("nav_setup")
+		# Build room
+		var width = G.rng.randi_range(MIN_ROOM_SIZE, MAX_ROOM_SIZE)
+		var height = G.rng.randi_range(MIN_ROOM_SIZE, MAX_ROOM_SIZE)
+		var offset = Vector2i(
+			G.rng.randi_range(0, G.CS),
+			G.rng.randi_range(0, G.CS))
+		build_room(width, height, chunk_origin_in_tiles + offset)
+
+		rooms_left_in_batch -= 1
+
 
 
 func nav_setup():
@@ -67,7 +113,7 @@ func nav_setup():
 
 
 # chunk_coords are in chunk coordinates - i.e. how many chunks from origin
-func generate_chunk(chunk_coords: Vector2i):
+func generate_chunk_instant(chunk_coords: Vector2i):
 	#print("generating chunk: ", chunk_coords)
 	build_bg(
 		Vector2i(chunk_coords[0] * G.CS, chunk_coords[1] * G.CS), 	
@@ -75,7 +121,7 @@ func generate_chunk(chunk_coords: Vector2i):
 	
 	var chunk_origin_tiles = chunk_coords * G.CS
 	# build buildings
-	for i in range(MAX_ROOMS):
+	for i in range(MAX_ROOMS_PER_CHUNK):
 		var width = G.rng.randi_range(MIN_ROOM_SIZE, MAX_ROOM_SIZE)
 		var height = G.rng.randi_range(MIN_ROOM_SIZE, MAX_ROOM_SIZE)
 		var offset = Vector2i(
@@ -201,6 +247,19 @@ func set_wall(x, y):
 
 func remove_wall(x, y):
 	set_cell(0, Vector2i(x, y), -1, WALL)
+
+
+func _add_chunks_that_need_generation(player_chunk_pos) -> void:
+	for chunk_x in range(player_chunk_pos[0]-2, player_chunk_pos[0]+2):
+		for chunk_y in range(player_chunk_pos[1]-2, player_chunk_pos[1]+2):
+			var candidate_chunk = Vector2i(chunk_x, chunk_y)
+			if (
+					not generated_chunk_chunkcoords.has(candidate_chunk)
+					and not chunk_queue.has(candidate_chunk)
+					and chunk_in_generation != candidate_chunk
+			):
+				print("Adding chunk to queue: ", candidate_chunk)
+				chunk_queue.append(candidate_chunk)
 
 
 func _on_navigation_region_2d_bake_finished():
