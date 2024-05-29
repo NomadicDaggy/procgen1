@@ -90,9 +90,11 @@ func generate_chunk(chunk_coords: Vector2i):
 func build_room(width: int, height:int, offset: Vector2i):
 	# create an area
 	var collision_shape = CollisionShape2D.new()
+	collision_shape.visible = false
 	collision_shape.shape = RectangleShape2D.new()
 	collision_shape.shape.size = Vector2((width + 1) * G.TS, (height + 1) * G.TS)
 	var new_room_area2d = Area2D.new()
+	new_room_area2d.visible = false
 	new_room_area2d.position = Vector2(
 		(offset[0] + (width / 2.0)) * G.TS,
 		(offset[1] + (height / 2.0)) * G.TS

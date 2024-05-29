@@ -24,6 +24,8 @@ Music="*res://scenes/music.tscn"
 [debug]
 
 gdscript/warnings/integer_division=0
+shapes/collision/shape_color=Color(1, 1, 1, 0)
+shapes/collision/draw_2d_outlines=false
 shader_language/size/initial_screen=2
 shader_language/size/initial_position=Vector2i(0, 0)
 shader_language/size/initial_position_type=2

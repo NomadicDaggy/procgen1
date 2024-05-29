@@ -50,6 +50,7 @@ animation = &"idle"
 visible = false
 z_index = 100
 shape = SubResource("CircleShape2D_p6ogd")
+debug_color = Color(0, 0.6, 0.7, 0.42)
 
 [node name="Navigation" type="Node2D" parent="."]
 
@@ -65,6 +66,7 @@ collision_layer = 0
 
 [node name="Collision2DForPlayer" type="CollisionShape2D" parent="Killzone"]
 shape = SubResource("CircleShape2D_p6ogd")
+debug_color = Color(0, 0.6, 0.7, 0.42)
 
 [node name="PlayerVisionArea" type="Area2D" parent="."]
 visible = false
@@ -73,6 +75,7 @@ collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerVisionArea"]
 shape = SubResource("CircleShape2D_euqso")
+debug_color = Color(0, 0.6, 0.7, 0.42)
 
 [node name="PatrolPathTimer" type="Timer" parent="."]
 wait_time = 2.0

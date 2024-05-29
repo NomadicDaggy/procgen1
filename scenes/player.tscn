@@ -41,6 +41,7 @@ animation = &"walk"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_2opww")
+debug_color = Color(0, 0.6, 0.7, 0.42)
 
 [node name="PointLight2D" type="PointLight2D" parent="."]
 color = Color(0, 0, 0, 1)

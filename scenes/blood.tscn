@@ -7,9 +7,11 @@
 amount = 32
 lifetime = 0.2
 explosiveness = 1.0
+randomness = 0.2
+lifetime_randomness = 0.1
 texture = ExtResource("1_07bba")
 direction = Vector2(-1, 0)
-spread = 20.0
+spread = 18.0
 gravity = Vector2(0, 0)
 initial_velocity_min = 216.83
 initial_velocity_max = 716.12

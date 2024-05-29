@@ -71,17 +71,17 @@ size = Vector2(240, 200)
 [node name="world" type="Node2D"]
 
 [node name="NavigationRegion2D" type="NavigationRegion2D" parent="."]
+self_modulate = Color(0, 0, 0, 1)
 z_index = 25
-position = Vector2(-7, 7)
 navigation_polygon = SubResource("NavigationPolygon_ktfvu")
 
 [node name="Map" type="TileMap" parent="NavigationRegion2D" node_paths=PackedStringArray("navigation_region")]
-position = Vector2(7, -7)
 tile_set = SubResource("TileSet_glrd7")
 collision_visibility_mode = 1
 navigation_visibility_mode = 1
 format = 2
 layer_0/name = "mid"
+layer_0/modulate = Color(0.188235, 0.247059, 0.552941, 1)
 layer_0/z_index = 1000
 layer_1/name = "background"
 layer_1/tile_data = PackedInt32Array()
@@ -91,6 +91,7 @@ navigation_region = NodePath("..")
 [node name="Buildings" type="Node" parent="NavigationRegion2D/Map"]
 
 [node name="Spawnarea" type="Area2D" parent="NavigationRegion2D/Map"]
+visible = false
 position = Vector2(102, -82)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="NavigationRegion2D/Map/Spawnarea"]
