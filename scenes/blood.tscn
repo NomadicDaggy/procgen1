@@ -1,0 +1,26 @@
+[gd_scene load_steps=3 format=3 uid="uid://r0iwsx4l2ns6"]
+
+[ext_resource type="Texture2D" uid="uid://dhh81tbfbwtj" path="res://assets/white-circle.png" id="1_07bba"]
+[ext_resource type="Script" path="res://scripts/blood.gd" id="1_d7vxl"]
+
+[node name="Blood" type="CPUParticles2D"]
+amount = 32
+lifetime = 0.2
+explosiveness = 1.0
+texture = ExtResource("1_07bba")
+direction = Vector2(-1, 0)
+spread = 20.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 216.83
+initial_velocity_max = 716.12
+scale_amount_min = 0.1
+scale_amount_max = 0.4
+color = Color(0.133333, 0.0862745, 0.0431373, 1)
+script = ExtResource("1_d7vxl")
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 0.15
+one_shot = true
+autostart = true
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

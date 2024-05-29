@@ -8,8 +8,8 @@ extends Node2D
 
 
 
-var enemy_nospawn_size = 40
-var enemy_spawn_max_dist = 90
+var enemy_nospawn_size = 30
+var enemy_spawn_max_dist = 70
 var max_enemies = 300
 
 

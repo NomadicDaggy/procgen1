@@ -2,6 +2,8 @@ extends CharacterBody2D
 
 enum State { PATROLLING, CHASING, IDLE, DEAD }
 
+const blood = preload("res://scenes/blood.tscn")
+
 @export var target: Node2D
 
 @export var speed: int
@@ -121,6 +123,11 @@ func move_to(pos, s, a, d):
 
 
 func shot():
+	var blood_particles = blood.instantiate()
+	add_sibling(blood_particles)
+	blood_particles.global_position = global_position
+	blood_particles.look_at(target.global_position)
+	
 	state = State.DEAD
 	target.enemies_killed += 1
 	queue_free()
