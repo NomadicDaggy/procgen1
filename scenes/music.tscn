@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://bhiv7723r6ems"]
+
+[ext_resource type="AudioStream" uid="uid://7j1ogr0gs7xe" path="res://assets/music/shadows_in_the_mist.mp3" id="1_iq3xk"]
+
+[node name="Music" type="AudioStreamPlayer2D"]
+stream = ExtResource("1_iq3xk")
+autoplay = true
+bus = &"Music"

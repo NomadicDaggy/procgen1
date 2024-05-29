@@ -96,15 +96,17 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -381.0
-offset_top = -152.0
+offset_top = -233.0
 offset_right = 408.0
-offset_bottom = -50.0
+offset_bottom = -32.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("3_pk1qp")
 text = "You wake up and you are certain that shit is about to go down.
 
-You'll probably want to find a green blinky boi."
+You'll probably want to find a green blinky boi.
+
+I bet it's hiding in one of the buildings."
 horizontal_alignment = 1
 autowrap_mode = 3
 
