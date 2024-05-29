@@ -15,13 +15,15 @@ const DEFAULT_GUN = preload("res://scenes/default_gun.tscn")
 @onready var player_projectiles = $"../GameManager/PlayerProjectiles"
 @onready var on_spawn_timer = $OnSpawnTimer
 
-
+var enemies_killed: int
 
 func _ready():
 	UI.player = self
 	
 	speed = 125
 	accel = 8
+
+	enemies_killed = 0
 	
 	var gun = DEFAULT_GUN.instantiate()
 	add_child(gun)

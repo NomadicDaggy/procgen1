@@ -55,13 +55,13 @@ func set_player_info_text(text):
 func player_died():
 	results_controls.visible = true
 	player_info.visible = false
-	results_info.text = "YOU DIED!\n"
+	results_info.text = "Ripperino pepperonis!\n"
 	
 	
 func game_over():
 	results_controls.visible = true
 	player_info.visible = false
-	results_info.text = "CONGRATS!\n"
+	results_info.text = "CONGRATS!\nYou bonked %s doodz." % player.enemies_killed
 
 
 func _on_restart_button_pressed():
