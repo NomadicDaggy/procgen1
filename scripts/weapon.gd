@@ -7,8 +7,6 @@ var shots_in_mag: int
 var round_in_chamber: bool
 
 @onready var shot_timer = $ShotTimer
-@onready var shot_light = $ShotLight
-@onready var shot_light_timer = $ShotLight/ShotLightTimer
 @onready var reload_timer = $ReloadTimer
 
 
@@ -26,7 +24,6 @@ func _ready():
 	pass
 
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):
 	pass
 
@@ -44,8 +41,6 @@ func try_shoot(bullet_container, player):
 	
 	shot_timer.start()
 	shots_in_mag -= 1
-	shot_light.enabled = true
-	shot_light_timer.start()
 
 	var bullet = BULLET.instantiate()
 	bullet.shooter = player
@@ -55,9 +50,11 @@ func try_shoot(bullet_container, player):
 	bullet.z_index = 1500
 	bullet_container.add_child(bullet)
 	
-	# TODO: play shot sound
 	round_in_chamber = false
 	UI.set_player_info_text(str(shots_in_mag))
+
+func try_melee_attack():
+	pass
 
 func try_reload():
 	if not reload_timer.is_stopped() or shots_in_mag == mag_capacity:
@@ -68,9 +65,6 @@ func try_reload():
 
 func _on_shot_timer_timeout():
 	round_in_chamber = true
-
-func _on_shot_light_timer_timeout():
-	shot_light.enabled = false
 
 func _on_reload_timer_timeout():
 	shots_in_mag = mag_capacity

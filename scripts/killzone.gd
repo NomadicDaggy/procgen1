@@ -4,6 +4,8 @@ signal self_destruct
 signal player_died
 
 @onready var spawn_timer = $SpawnTimer
+@onready var stuck_check_timer = $StuckCheckTimer
+
 
 @onready var timer = $Timer
 
@@ -41,3 +43,9 @@ func _on_body_entered(body):
 
 func _on_timer_timeout():
 	player.game_over()
+
+
+func _on_stuck_check_timer_timeout():
+	if get_overlapping_areas().size() > 0:
+		print("Am stuck, despawning")
+		self_destruct.emit()

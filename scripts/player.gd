@@ -2,12 +2,12 @@ extends CharacterBody2D
 
 signal player_died
 
-const DEFAULT_GUN = preload("res://scenes/default_gun.tscn")
+const WEAPON = preload("res://scenes/weapon.tscn")
 
 @export var speed: int 
 @export var accel: int
 @export var dead = false
-@export var ranged_weapon: Node2D
+@export var main_weapon: Node2D
 
 @onready var game_manager = $"../GameManager"
 @onready var animated_sprite_2d = $AnimatedSprite2D
@@ -25,9 +25,9 @@ func _ready():
 
 	enemies_killed = 0
 	
-	var gun = DEFAULT_GUN.instantiate()
+	var gun = WEAPON.instantiate()
 	add_child(gun)
-	ranged_weapon = gun
+	main_weapon = gun
 	
 	if G.debug_mode:
 		player_main_light.shadow_enabled = false
@@ -55,9 +55,9 @@ func _physics_process(delta):
 		return
 
 	if Input.get_action_strength("main_action"):
-		ranged_weapon.try_shoot(player_projectiles, self)
+		main_weapon.try_shoot(player_projectiles, self)
 	if Input.get_action_strength("reload"):
-		ranged_weapon.try_reload()
+		main_weapon.try_reload()
 
 	
 func game_over():
