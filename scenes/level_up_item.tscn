@@ -1,5 +1,6 @@
-[gd_scene load_steps=3 format=3 uid="uid://cn07mj6ckohmt"]
+[gd_scene load_steps=4 format=3 uid="uid://cn07mj6ckohmt"]
 
+[ext_resource type="Script" path="res://scripts/level_up_item.gd" id="1_n5fov"]
 [ext_resource type="Theme" uid="uid://ko77oq5p32gu" path="res://resources/main_ui_theme.tres" id="1_oaosn"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ag7x0"]
@@ -22,6 +23,7 @@ offset_right = 496.0
 offset_bottom = 149.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
+script = ExtResource("1_n5fov")
 
 [node name="Panel" type="Panel" parent="."]
 layout_mode = 0
@@ -54,3 +56,5 @@ theme = ExtResource("1_oaosn")
 theme_override_font_sizes/font_size = 96
 text = "Upgrade effect"
 autowrap_mode = 3
+
+[connection signal="gui_input" from="Panel" to="." method="_on_panel_gui_input"]

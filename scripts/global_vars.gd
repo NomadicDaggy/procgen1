@@ -1,6 +1,9 @@
 extends Node2D
 
 
+enum Operation { MULT_ADD, ADD }
+
+
 # Tilesize in pixels
 const TS: float = 16.0
 
@@ -11,6 +14,29 @@ const CS: int = 64
 const CS_PX = int(TS) * CS
 
 const PLAYER_NAME = "Player"
+
+const UPGRADE_OPTIONS = {
+	"movement_speed": {
+		"header": "Movement Speed",
+		"details": "+ X player movement speed",
+		"progression": [0.07, 0.08, 0.09, 0.1, 0.11],
+		"type": Operation.MULT_ADD,
+	},
+	"reload_speed": {
+		"header": "Reload Speed",
+		"details": "X sec on weapon reload time",
+		"progression": [-0.2, -0.2, -0.2, -0.2, -0.2],
+		"type": Operation.ADD,
+	},
+	"projectile_speed": {
+		"header": "Projectile Speed",
+		"details": "+ X units/sec weapon projectile speed",
+		"progression": [200, 200, 200, 200, 200],
+		"type": Operation.ADD,
+	},
+}
+
+@export var player: CharacterBody2D
 
 # ---------------------------
 var debug_mode = false   # --
@@ -31,6 +57,10 @@ func _ready():
 	for l in range(1, 20):
 		level_thresholds[l] = round((1 + 0.75 * l) * (1.15 ** l)) + lsum
 		lsum = level_thresholds[l]
+
+
+func level_up_player(upgrade_name):
+	player.level_up(upgrade_name)
 
 
 func round_to_dec(num, digit) -> float:

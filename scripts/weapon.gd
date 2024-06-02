@@ -14,7 +14,7 @@ var bullet_speed: float
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	mag_capacity = 20
-	bullet_speed = 2000.0
+	bullet_speed = 1000.0
 	shots_in_mag = mag_capacity
 	round_in_chamber = true
 

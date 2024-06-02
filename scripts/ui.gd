@@ -52,6 +52,10 @@ func update_hud():
 	#debug.text += "Enemy count: " + str(enemies.get_child_count())
 	debug.text += "XP: " + str(player.xp) + "\n"
 	debug.text += "LVL: " + str(player.level) + "\n"
+	debug.text += "\n"
+	debug.text += "Movement speed: " + str(player.speed) + "\n"
+	debug.text += "Reload speed: " + str(player.main_weapon.reload_timer.wait_time) + "\n"
+	debug.text += "Projectile speed: " + str(player.main_weapon.bullet_speed) + "\n"
 
 
 func set_player_info_text(text):
@@ -64,18 +68,41 @@ func player_died():
 	player_info.visible = false
 	results_info.text = "Ripperino pepperonis!\n"
 
-func player_leveled_up():
+
+func present_level_up_choices(upgrade_names):
 	level_up_container.visible = true
-	
-	for _i in 3:
-		var upgrade_choice_panel = LEVEL_UP_ITEM.instantiate()
-		level_up_container.add_child(upgrade_choice_panel)
+
+	# TODO: random upgrades, but no duplicates
+	# TODO: proper choices if some already max level (currently functional, but visually buggy)
+	for upgrade_name in upgrade_names:
+		var upgrade_choice_item = LEVEL_UP_ITEM.instantiate()
+		upgrade_choice_item.init_upgrade_name = upgrade_name
+		var upgrade_details = G.UPGRADE_OPTIONS[upgrade_name]
+		# TODO: Add roman numeral indicating stat level
+		upgrade_choice_item.init_header_text = upgrade_details.header
+		var next_stat_level = player.stat_levels[upgrade_name] + 1
+		
+		if upgrade_details.progression.size() <= next_stat_level:
+			upgrade_choice_item.queue_free()
+			continue
+		
+		var increase_by = upgrade_details.progression[next_stat_level]
+		upgrade_choice_item.init_details_text = upgrade_details.details.replace("X", str(G.round_to_dec(increase_by, 2)))
+
+		level_up_container.add_child(upgrade_choice_item)
 
 	
 func game_over():
 	results_controls.visible = true
 	player_info.visible = false
 	results_info.text = "CONGRATS!\nYou bonked %s doodz." % player.enemies_killed
+
+
+func clear_level_up_choices():
+	level_up_container.visible = false
+
+	for c in level_up_container.get_children():
+		c.queue_free()
 
 
 func _on_restart_button_pressed():
