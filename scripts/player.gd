@@ -1,6 +1,5 @@
 extends CharacterBody2D
 
-signal player_died
 signal player_leveled_up
 
 const WEAPON = preload("res://scenes/weapon.tscn")
@@ -26,7 +25,7 @@ func _ready():
 	
 	speed = 125
 	accel = 8
-	xp = 0.0
+	xp = 5.0
 	level = 1
 
 	enemies_killed = 0
@@ -42,10 +41,8 @@ func _ready():
 
 
 func _process(_delta):
-	# TODO: handle levelling up
-	if xp >= G.level_thresholds[level]:
-		level += 1
-		player_leveled_up.emit()
+	if xp >= G.level_thresholds[level] and not G.game_paused:
+		leveled_up()
 
 
 func _physics_process(delta):
@@ -76,3 +73,10 @@ func _physics_process(delta):
 func game_over():
 	game_manager.pause_game()
 	UI.player_died()
+
+
+func leveled_up():
+	print("Levelling up!")
+	game_manager.pause_game()
+	level += 1
+	UI.player_leveled_up()

@@ -79,6 +79,7 @@ grow_vertical = 2
 text = "Congrats!"
 
 [node name="StartControls" type="Control" parent="."]
+visible = false
 z_index = 1000
 layout_mode = 3
 anchors_preset = 15
@@ -147,6 +148,29 @@ theme = ExtResource("3_pk1qp")
 theme_override_colors/font_color = Color(0.682353, 0.309804, 0.356863, 1)
 theme_override_styles/normal = SubResource("StyleBoxFlat_a3mb4")
 text = "Wake Up Samurai"
+
+[node name="Control" type="Control" parent="."]
+visible = false
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="LevelUpContainer" type="VBoxContainer" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -291.0
+offset_top = -233.0
+offset_right = 294.0
+offset_bottom = 219.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+alignment = 1
 
 [connection signal="pressed" from="ResultsControls/RestartButton" to="." method="_on_restart_button_pressed"]
 [connection signal="pressed" from="StartControls/StartGameButton" to="." method="_on_start_game_button_pressed"]

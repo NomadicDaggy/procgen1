@@ -1,5 +1,7 @@
 extends CanvasLayer
 
+const LEVEL_UP_ITEM = preload("res://scenes/level_up_item.tscn")
+
 @onready var world: Node2D #= $"../world"
 @onready var navigation_region: NavigationRegion2D #= $"../world/NavigationRegion2D"
 @onready var enemies: Node2D #= $"../world/GameManager/Enemies"
@@ -10,6 +12,8 @@ extends CanvasLayer
 @onready var results_controls = $ResultsControls
 @onready var results_info = $ResultsControls/ResultsInfo
 @onready var start_controls = $StartControls
+@onready var level_up_container = $LevelUpContainer
+
 
 @export var player: CharacterBody2D
 
@@ -18,6 +22,7 @@ func _ready():
 	start_controls.visible = true
 	player_info.visible = false
 	results_controls.visible = false
+	level_up_container.visible = false
 
 
 func _process(_delta):
@@ -45,8 +50,8 @@ func update_hud():
 	debug.text = ""
 	#debug.text =  "Mouse pos:   " + str(world.get_global_mouse_position()) + "\n"
 	#debug.text += "Enemy count: " + str(enemies.get_child_count())
-	debug.text += "XP: " + str(player.xp)
-	debug.text += "LVL: " + str(player.level)
+	debug.text += "XP: " + str(player.xp) + "\n"
+	debug.text += "LVL: " + str(player.level) + "\n"
 
 
 func set_player_info_text(text):
@@ -58,7 +63,14 @@ func player_died():
 	results_controls.visible = true
 	player_info.visible = false
 	results_info.text = "Ripperino pepperonis!\n"
+
+func player_leveled_up():
+	level_up_container.visible = true
 	
+	for _i in 3:
+		var upgrade_choice_panel = LEVEL_UP_ITEM.instantiate()
+		level_up_container.add_child(upgrade_choice_panel)
+
 	
 func game_over():
 	results_controls.visible = true
@@ -67,7 +79,11 @@ func game_over():
 
 
 func _on_restart_button_pressed():
+	if not results_controls.visible:
+		return
+	
 	get_parent().get_tree().reload_current_scene()
+	
 	results_controls.visible = false
 	player_info.visible = true
 	G.game_paused = false
@@ -77,4 +93,5 @@ func _on_start_game_button_pressed():
 	results_controls.visible = false
 	player_info.visible = true
 	start_controls.visible = false
+	
 	game_manager.unpause_game()

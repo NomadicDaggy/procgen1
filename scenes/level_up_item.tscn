@@ -1,0 +1,56 @@
+[gd_scene load_steps=3 format=3 uid="uid://cn07mj6ckohmt"]
+
+[ext_resource type="Theme" uid="uid://ko77oq5p32gu" path="res://resources/main_ui_theme.tres" id="1_oaosn"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ag7x0"]
+content_margin_left = 54.0
+bg_color = Color(0.0823529, 0.137255, 0.137255, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.247059, 0.345098, 0.392157, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[node name="LevelUpItem" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 496.0
+offset_bottom = 149.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 0
+offset_right = 496.0
+offset_bottom = 129.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_ag7x0")
+
+[node name="UpgradeName" type="Label" parent="Panel"]
+layout_mode = 1
+anchors_preset = -1
+offset_left = 22.0
+offset_top = 18.0
+offset_right = 1552.0
+offset_bottom = 163.0
+scale = Vector2(0.2, 0.2)
+theme = ExtResource("1_oaosn")
+theme_override_colors/font_color = Color(0.227451, 0.486275, 0.321569, 1)
+theme_override_font_sizes/font_size = 120
+text = "Upgrade name"
+
+[node name="UpgradeEffect" type="Label" parent="Panel"]
+layout_mode = 1
+anchors_preset = -1
+offset_left = 36.0
+offset_top = 59.0
+offset_right = 1471.0
+offset_bottom = 175.0
+scale = Vector2(0.2, 0.2)
+theme = ExtResource("1_oaosn")
+theme_override_font_sizes/font_size = 96
+text = "Upgrade effect"
+autowrap_mode = 3
