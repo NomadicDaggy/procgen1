@@ -20,9 +20,17 @@ var godmode = false
 var game_paused = true
 var rng = RandomNumberGenerator.new()
 
+var level_thresholds: Dictionary = {}
+
 func _ready():
 	if debug_mode:
 		godmode = true
+
+	# Setup level xp tresholds
+	var lsum = 0
+	for l in range(1, 20):
+		level_thresholds[l] = round((1 + 0.75 * l) * (1.15 ** l)) + lsum
+		lsum = level_thresholds[l]
 
 
 func round_to_dec(num, digit) -> float:

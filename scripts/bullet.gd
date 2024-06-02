@@ -6,7 +6,7 @@
 extends Area2D
 
 var direction = Vector2.ZERO
-var bullet_speed = 1000
+var bullet_speed: float
 @export var shooter: CharacterBody2D
 
 func _ready():

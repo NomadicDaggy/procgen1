@@ -11,7 +11,6 @@ extends CanvasLayer
 @onready var results_info = $ResultsControls/ResultsInfo
 @onready var start_controls = $StartControls
 
-
 @export var player: CharacterBody2D
 
 
@@ -43,8 +42,11 @@ func update_hud():
 	var player_info_offset = Vector2(-50, -100)
 	player_info.position = screen_center + player_info_offset
 
-	debug.text =  "Mouse pos:   " + str(world.get_global_mouse_position()) + "\n"
-	debug.text += "Enemy count: " + str(enemies.get_child_count())
+	debug.text = ""
+	#debug.text =  "Mouse pos:   " + str(world.get_global_mouse_position()) + "\n"
+	#debug.text += "Enemy count: " + str(enemies.get_child_count())
+	debug.text += "XP: " + str(player.xp)
+	debug.text += "LVL: " + str(player.level)
 
 
 func set_player_info_text(text):

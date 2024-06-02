@@ -2,7 +2,8 @@ extends CharacterBody2D
 
 enum State { PATROLLING, CHASING, IDLE, DEAD }
 
-const blood = preload("res://scenes/blood.tscn")
+const BLOOD = preload("res://scenes/blood.tscn")
+const XP_PICKUP = preload("res://scenes/xp_pickup.tscn")
 
 @export var target: Node2D
 
@@ -82,7 +83,14 @@ func _physics_process(delta):
 			move_and_slide()
 
 		State.DEAD:
-			pass
+			var new_xp_pickup = XP_PICKUP.instantiate()
+			new_xp_pickup.z_index = 500
+			new_xp_pickup.global_position = global_position
+			new_xp_pickup.xp_value = 1
+			get_parent().add_child(new_xp_pickup)
+
+			target.enemies_killed += 1
+			queue_free()
 	
 	if trying_to_find_player_with_ray:
 		# collision mask is weird:
@@ -123,14 +131,12 @@ func move_to(pos, s, a, d):
 
 
 func shot():
-	var blood_particles = blood.instantiate()
+	var blood_particles = BLOOD.instantiate()
 	add_sibling(blood_particles)
 	blood_particles.global_position = global_position
 	blood_particles.look_at(target.global_position)
 	
 	state = State.DEAD
-	target.enemies_killed += 1
-	queue_free()
 
 
 func _on_timer_timeout():

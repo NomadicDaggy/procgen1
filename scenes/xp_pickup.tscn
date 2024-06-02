@@ -1,0 +1,38 @@
+[gd_scene load_steps=6 format=3 uid="uid://ccvwfdh7vvuax"]
+
+[ext_resource type="Texture2D" uid="uid://x6fee8su30kj" path="res://assets/ts1.png" id="1_mxujw"]
+[ext_resource type="Script" path="res://scripts/xp_pickup.gd" id="1_t55rs"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gh08t"]
+atlas = ExtResource("1_mxujw")
+region = Rect2(16, 48, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_87nxg"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gh08t")
+}],
+"loop": true,
+"name": &"default",
+"speed": 0.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_yabxm"]
+size = Vector2(16, 16)
+
+[node name="XPPickup" type="Area2D"]
+z_index = 1200
+scale = Vector2(0.25, 0.25)
+collision_layer = 256
+collision_mask = 2
+script = ExtResource("1_t55rs")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_87nxg")
+autoplay = "default"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_yabxm")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

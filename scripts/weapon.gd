@@ -5,6 +5,7 @@ const BULLET = preload("res://scenes/bullet.tscn")
 var mag_capacity: int
 var shots_in_mag: int
 var round_in_chamber: bool
+var bullet_speed: float
 
 @onready var shot_timer = $ShotTimer
 @onready var reload_timer = $ReloadTimer
@@ -12,7 +13,8 @@ var round_in_chamber: bool
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	mag_capacity = 2
+	mag_capacity = 20
+	bullet_speed = 2000.0
 	shots_in_mag = mag_capacity
 	round_in_chamber = true
 
@@ -46,6 +48,7 @@ func try_shoot(bullet_container, player):
 	bullet.shooter = player
 	bullet.global_position = global_position
 	bullet.direction = (get_global_mouse_position() - global_position).normalized()
+	bullet.bullet_speed = bullet_speed
 	bullet.rotation = bullet.direction.angle() + PI/2
 	bullet.z_index = 1500
 	bullet_container.add_child(bullet)

@@ -1,11 +1,16 @@
 extends CharacterBody2D
 
 signal player_died
+signal player_leveled_up
 
 const WEAPON = preload("res://scenes/weapon.tscn")
 
 @export var speed: int 
 @export var accel: int
+@export var xp: float
+@export var level: int
+@export var enemies_killed: int
+
 @export var dead = false
 @export var main_weapon: Node2D
 
@@ -15,13 +20,14 @@ const WEAPON = preload("res://scenes/weapon.tscn")
 @onready var player_projectiles = $"../GameManager/PlayerProjectiles"
 @onready var on_spawn_timer = $OnSpawnTimer
 
-var enemies_killed: int
 
 func _ready():
 	UI.player = self
 	
 	speed = 125
 	accel = 8
+	xp = 0.0
+	level = 1
 
 	enemies_killed = 0
 	
@@ -33,6 +39,13 @@ func _ready():
 		player_main_light.shadow_enabled = false
 		speed = 500
 		accel = 20
+
+
+func _process(_delta):
+	# TODO: handle levelling up
+	if xp >= G.level_thresholds[level]:
+		level += 1
+		player_leveled_up.emit()
 
 
 func _physics_process(delta):
