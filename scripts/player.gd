@@ -28,7 +28,7 @@ func _ready():
 	speed = SM.init_upgradeable_stat(G.StatType.MOVEMENT_SPEED, 125)
 
 	accel = 8
-	xp = 6.0
+	xp = 0.0
 	level = 1
 
 	enemies_killed = 0

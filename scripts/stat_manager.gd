@@ -33,7 +33,7 @@ func _ready():
 	#var lsum = 0
 	for l in range(1, 20):
 		#level_thresholds[l] = round((1 + 0.75 * l) * (1.15 ** l)) + lsum
-		level_thresholds[l] = l * 1
+		level_thresholds[l] = l * 5
 		#lsum = level_thresholds[l]
 	
 	for stat in SM.UPGRADE_DEFAULTS.keys():
@@ -47,7 +47,6 @@ func init_upgradeable_stat(type, value) -> Node:
 	n.value = value
 	SM.add_child(n)
 	return n
-
 
 
 func level_up_player(stat_type: G.StatType):

@@ -81,7 +81,6 @@ func present_level_up_choices():
 		var increase_by = stat.progression[next_stat_level]
 		level_up_item.init_details_text = stat.info_details.replace("X", str(G.round_to_dec(increase_by, 2)))
 		level_up_item.init_details_text += "\n\n[color=gray]( %s -> %s )[/color]" % [stat.value, SM.get_stat_value_next_level(stat)]
-		
 		level_up_container.add_child(level_up_item)
 
 
@@ -138,5 +137,4 @@ func _on_start_game_button_pressed():
 	results_controls.visible = false
 	player_info.visible = true
 	start_controls.visible = false
-	
 	game_manager.unpause_game()
