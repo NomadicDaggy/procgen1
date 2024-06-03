@@ -28,7 +28,7 @@ func _ready():
 	speed = SM.init_upgradeable_stat(G.StatType.MOVEMENT_SPEED, 125)
 
 	accel = 8
-	xp = 5.0
+	xp = 6.0
 	level = 1
 
 	enemies_killed = 0
@@ -81,9 +81,4 @@ func game_over():
 func should_level_up():
 	print("Levelling up!")
 	game_manager.pause_game()
-
-	# TODO: choose random items here, but no dupes
-	UI.present_level_up_choices([
-		G.StatType.MOVEMENT_SPEED,
-		G.StatType.RELOAD_SPEED,
-		G.StatType.PROJECTILE_SPEED])
+	UI.present_level_up_choices()

@@ -69,27 +69,45 @@ func player_died():
 	results_info.text = "Ripperino pepperonis!\n"
 
 
-func present_level_up_choices(upgrade_names):
+func present_level_up_choices():
 	level_up_container.visible = true
-
-	# TODO: random upgrades, but no duplicates
-	# TODO: proper choices if some already max level (currently functional, but visually buggy)
-	for upgrade_name in upgrade_names:
-		var upgrade_choice_item = LEVEL_UP_ITEM.instantiate()
-		upgrade_choice_item.init_upgrade_name = upgrade_name
-		var upgrade_details = SM.UPGRADE_DEFAULTS[upgrade_name]
-		var next_stat_level = SM.stat_levels[upgrade_name] + 1
-		upgrade_choice_item.init_header_text = "%s %s" % [upgrade_details.header, G.int_to_roman(next_stat_level)]
+	var stat_types = choose_n_random_stat_types(3)
+	for stat_type in stat_types:
+		var level_up_item = LEVEL_UP_ITEM.instantiate()
+		level_up_item.init_stat_type = stat_type
+		var stat = SM.get_stat_by_type(stat_type)
+		var next_stat_level = SM.stat_levels[stat_type] + 1
+		level_up_item.init_header_text = "%s %s" % [stat.info_header, G.int_to_roman(next_stat_level)]
+		var increase_by = stat.progression[next_stat_level]
+		level_up_item.init_details_text = stat.info_details.replace("X", str(G.round_to_dec(increase_by, 2)))
+		level_up_item.init_details_text += "\n\n[color=gray]( %s -> %s )[/color]" % [stat.value, SM.get_stat_value_next_level(stat)]
 		
-		if upgrade_details.progression.size() == next_stat_level:
-			upgrade_choice_item.queue_free()
+		level_up_container.add_child(level_up_item)
+
+
+func choose_n_random_stat_types(n):
+	var stat_type_candidates: Array = range(G.StatType.size())
+	var stat_types_chosen = []
+
+	while stat_types_chosen.size() < n:
+		if stat_type_candidates.size() == 0:
+			# TODO: if stat_types_chosen.size() here, need to show to player
+			return stat_types_chosen
+
+		var type_index: int = G.rng.randi_range(0, stat_type_candidates.size() - 1)
+		var type: int = stat_type_candidates[type_index]
+		var next_stat_level = SM.stat_levels[type] + 1
+		var stat = SM.get_stat_by_type(type)
+
+		# max stat level reached
+		if next_stat_level > stat.progression.size() - 1:
+			stat_type_candidates.remove_at(type_index)
 			continue
 		
-		var increase_by = upgrade_details.progression[next_stat_level]
-		upgrade_choice_item.init_details_text = upgrade_details.details.replace("X", str(G.round_to_dec(increase_by, 2)))
-		upgrade_choice_item.init_details_text += "\n\n[color=gray]( %s -> %s )[/color]" % [1, 2]
-		
-		level_up_container.add_child(upgrade_choice_item)
+		stat_types_chosen.append(type)
+		stat_type_candidates.remove_at(type_index)
+	
+	return stat_types_chosen
 
 	
 func game_over():

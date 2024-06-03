@@ -6,19 +6,19 @@ const UPGRADE_DEFAULTS = {
 	G.StatType.MOVEMENT_SPEED: {
 		"header": "Movement Speed",
 		"details": "+ X player movement speed",
-		"progression": [0.07, 0.08, 0.09, 0.1, 0.11],
+		"progression": [null, 0.07, 0.08, 0.09, 0.1, 0.11],
 		"operation": G.Operation.MULT_ADD,
 	},
 	G.StatType.RELOAD_SPEED: {
 		"header": "Reload Speed",
 		"details": "X sec on weapon reload time",
-		"progression": [-0.2, -0.2, -0.2, -0.2, -0.2],
+		"progression": [null, -0.2, -0.2, -0.2, -0.2, -0.2],
 		"operation": G.Operation.ADD,
 	},
 	G.StatType.PROJECTILE_SPEED: {
 		"header": "Projectile Speed",
 		"details": "+ X units/sec weapon projectile speed",
-		"progression": [200, 200, 200, 200, 200],
+		"progression": [null, 200, 200, 200, 200, 200],
 		"operation": G.Operation.ADD,
 	},
 }
@@ -33,7 +33,7 @@ func _ready():
 	#var lsum = 0
 	for l in range(1, 20):
 		#level_thresholds[l] = round((1 + 0.75 * l) * (1.15 ** l)) + lsum
-		level_thresholds[l] = l * 3
+		level_thresholds[l] = l * 1
 		#lsum = level_thresholds[l]
 	
 	for stat in SM.UPGRADE_DEFAULTS.keys():
@@ -58,9 +58,13 @@ func level_up_player(stat_type: G.StatType):
 
 func increment_stat_level(stat_type: G.StatType):
 	var stat = get_stat_by_type(stat_type)
-	var next_stat_level = stat_levels[stat_type]
-	stat.value = perform_operation(stat, stat.progression[next_stat_level])
+	stat.value = get_stat_value_next_level(stat)
 	stat_levels[stat_type] += 1
+
+
+func get_stat_value_next_level(stat: Node):
+	var next_stat_level = stat_levels[stat.stat_type] + 1
+	return perform_operation(stat, stat.progression[next_stat_level])
 
 
 func get_stat_by_type(stat_type: G.StatType) -> Node:
