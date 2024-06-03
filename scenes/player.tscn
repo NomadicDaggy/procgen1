@@ -1,8 +1,9 @@
-[gd_scene load_steps=8 format=3 uid="uid://cbjk1vccn32a4"]
+[gd_scene load_steps=10 format=3 uid="uid://cbjk1vccn32a4"]
 
 [ext_resource type="Script" path="res://scripts/player.gd" id="1_3qs0h"]
 [ext_resource type="Texture2D" uid="uid://cy2h8g5udhcmp" path="res://assets/player.png" id="1_83yj0"]
 [ext_resource type="Texture2D" uid="uid://rn52b3ekoi8p" path="res://assets/point_light_texture.webp" id="3_5nuo1"]
+[ext_resource type="Script" path="res://scripts/xp_pickup_area.gd" id="4_h08nw"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_psphk"]
 atlas = ExtResource("1_83yj0")
@@ -28,6 +29,9 @@ animations = [{
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_2opww"]
 radius = 5.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ev3x2"]
+radius = 93.0054
 
 [node name="Player" type="CharacterBody2D"]
 collision_layer = 194
@@ -58,4 +62,13 @@ texture_scale = 8.37
 one_shot = true
 autostart = true
 
+[node name="XPPickupArea" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 256
+script = ExtResource("4_h08nw")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="XPPickupArea"]
+shape = SubResource("CircleShape2D_ev3x2")
+
 [connection signal="player_leveled_up" from="." to="." method="_on_player_leveled_up"]
+[connection signal="area_entered" from="XPPickupArea" to="XPPickupArea" method="_on_area_entered"]

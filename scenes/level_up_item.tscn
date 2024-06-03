@@ -19,16 +19,16 @@ corner_radius_bottom_left = 10
 [node name="LevelUpItem" type="Control"]
 layout_mode = 3
 anchors_preset = 0
-offset_right = 496.0
-offset_bottom = 149.0
+offset_right = 593.0
+offset_bottom = 144.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource("1_n5fov")
 
 [node name="Panel" type="Panel" parent="."]
 layout_mode = 0
-offset_right = 496.0
-offset_bottom = 129.0
+offset_right = 593.0
+offset_bottom = 144.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_ag7x0")
 
 [node name="UpgradeName" type="Label" parent="Panel"]
@@ -36,7 +36,7 @@ layout_mode = 1
 anchors_preset = -1
 offset_left = 22.0
 offset_top = 18.0
-offset_right = 1552.0
+offset_right = 2732.0
 offset_bottom = 163.0
 scale = Vector2(0.2, 0.2)
 theme = ExtResource("1_oaosn")
@@ -44,17 +44,19 @@ theme_override_colors/font_color = Color(0.227451, 0.486275, 0.321569, 1)
 theme_override_font_sizes/font_size = 120
 text = "Upgrade name"
 
-[node name="UpgradeEffect" type="Label" parent="Panel"]
+[node name="UpgradeEffect" type="RichTextLabel" parent="Panel"]
 layout_mode = 1
 anchors_preset = -1
 offset_left = 36.0
 offset_top = 59.0
-offset_right = 1471.0
-offset_bottom = 175.0
+offset_right = 2696.0
+offset_bottom = 384.0
 scale = Vector2(0.2, 0.2)
+mouse_filter = 1
 theme = ExtResource("1_oaosn")
-theme_override_font_sizes/font_size = 96
-text = "Upgrade effect"
-autowrap_mode = 3
+theme_override_font_sizes/normal_font_size = 80
+bbcode_enabled = true
+text = "Upgrade effect
+test"
 
 [connection signal="gui_input" from="Panel" to="." method="_on_panel_gui_input"]

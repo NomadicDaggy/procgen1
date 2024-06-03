@@ -78,17 +78,17 @@ func present_level_up_choices(upgrade_names):
 		var upgrade_choice_item = LEVEL_UP_ITEM.instantiate()
 		upgrade_choice_item.init_upgrade_name = upgrade_name
 		var upgrade_details = G.UPGRADE_OPTIONS[upgrade_name]
-		# TODO: Add roman numeral indicating stat level
-		upgrade_choice_item.init_header_text = upgrade_details.header
 		var next_stat_level = player.stat_levels[upgrade_name] + 1
+		upgrade_choice_item.init_header_text = "%s %s" % [upgrade_details.header, G.int_to_roman(next_stat_level)]
 		
-		if upgrade_details.progression.size() <= next_stat_level:
+		if upgrade_details.progression.size() == next_stat_level:
 			upgrade_choice_item.queue_free()
 			continue
 		
 		var increase_by = upgrade_details.progression[next_stat_level]
 		upgrade_choice_item.init_details_text = upgrade_details.details.replace("X", str(G.round_to_dec(increase_by, 2)))
-
+		upgrade_choice_item.init_details_text += "\n\n[color=gray]( %s -> %s )[/color]" % [1, 2]
+		
 		level_up_container.add_child(upgrade_choice_item)
 
 	

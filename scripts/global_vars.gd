@@ -55,7 +55,8 @@ func _ready():
 	# Setup level xp tresholds
 	var lsum = 0
 	for l in range(1, 20):
-		level_thresholds[l] = round((1 + 0.75 * l) * (1.15 ** l)) + lsum
+		#level_thresholds[l] = round((1 + 0.75 * l) * (1.15 ** l)) + lsum
+		level_thresholds[l] = l * 3
 		lsum = level_thresholds[l]
 
 
@@ -76,3 +77,6 @@ func raycast_to_pos(from, to, collider_mask):
 		return 0
 	
 	return result
+
+func int_to_roman(i) -> String:
+	return { 1: "I", 2: "II", 3: "III", 4: "IV", 5: "V", }[i]
