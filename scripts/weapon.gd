@@ -2,10 +2,11 @@ extends Node2D
 
 const BULLET = preload("res://scenes/bullet.tscn")
 
-var mag_capacity: int
-var shots_in_mag: int
-var round_in_chamber: bool
-var bullet_speed: float
+@export var mag_capacity: int
+@export var shots_in_mag: int
+@export var round_in_chamber: bool
+@export var projectile_speed: Node
+@export var reload_speed: Node
 
 @onready var shot_timer = $ShotTimer
 @onready var reload_timer = $ReloadTimer
@@ -14,11 +15,12 @@ var bullet_speed: float
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	mag_capacity = 20
-	bullet_speed = 1000.0
 	shots_in_mag = mag_capacity
 	round_in_chamber = true
+	projectile_speed = SM.init_upgradeable_stat(G.StatType.PROJECTILE_SPEED, 1000.0)
+	reload_speed = SM.init_upgradeable_stat(G.StatType.RELOAD_SPEED, 1.5)
 
-	reload_timer.wait_time = 1.5
+	reload_timer.wait_time = reload_speed.value
 	shot_timer.wait_time = 0.2
 
 	
@@ -27,7 +29,8 @@ func _ready():
 
 
 func _process(_delta):
-	pass
+	if reload_timer.wait_time != reload_speed.value:
+		reload_timer.wait_time = reload_speed.value
 
 func _physics_process(_delta):
 	pass
@@ -48,7 +51,7 @@ func try_shoot(bullet_container, player):
 	bullet.shooter = player
 	bullet.global_position = global_position
 	bullet.direction = (get_global_mouse_position() - global_position).normalized()
-	bullet.bullet_speed = bullet_speed
+	bullet.bullet_speed = projectile_speed.value
 	bullet.rotation = bullet.direction.angle() + PI/2
 	bullet.z_index = 1500
 	bullet_container.add_child(bullet)

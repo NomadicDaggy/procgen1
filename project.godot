@@ -18,6 +18,7 @@ config/icon="res://icon.svg"
 [autoload]
 
 G="*res://scripts/global_vars.gd"
+SM="*res://scenes/stat_manager.tscn"
 UI="*res://scenes/ui.tscn"
 Music="*res://scenes/music.tscn"
 

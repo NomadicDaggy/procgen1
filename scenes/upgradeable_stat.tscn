@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://dfk1wfnm1unco"]
+
+[ext_resource type="Script" path="res://scripts/upgradeable_stat.gd" id="1_y8gtt"]
+
+[node name="UpgradeableStat" type="Node"]
+script = ExtResource("1_y8gtt")

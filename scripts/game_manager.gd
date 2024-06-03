@@ -7,7 +7,6 @@ extends Node2D
 @onready var canvas_modulate = $"../CanvasModulate"
 
 
-
 var enemy_nospawn_size = 30
 var enemy_spawn_max_dist = 70
 var max_enemies = 250
@@ -16,8 +15,7 @@ var max_enemies = 250
 var enemy_scene = preload("res://scenes/enemy.tscn")
 
 func _ready():
-	# Start paused
-	#pause_game()
+	G.game_manager = self
 	
 	enemy_spawn_timer.wait_time = 0.03
 	enemy_spawn_timer.autostart = true

@@ -4,12 +4,12 @@ signal player_leveled_up
 
 const WEAPON = preload("res://scenes/weapon.tscn")
 
-@export var speed: int 
+
+@export var speed: Node
 @export var accel: int
 @export var xp: float
 @export var level: int
 @export var enemies_killed: int
-@export var stat_levels: Dictionary
 
 @export var dead = false
 @export var main_weapon: Node2D
@@ -24,17 +24,14 @@ const WEAPON = preload("res://scenes/weapon.tscn")
 func _ready():
 	UI.player = self
 	G.player = self
-	
-	speed = 125
+
+	speed = SM.init_upgradeable_stat(G.StatType.MOVEMENT_SPEED, 125)
+
 	accel = 8
 	xp = 5.0
 	level = 1
 
 	enemies_killed = 0
-
-	stat_levels = {}
-	for stat in G.UPGRADE_OPTIONS.keys():
-		stat_levels[stat] = 0
 	
 	var gun = WEAPON.instantiate()
 	add_child(gun)
@@ -42,19 +39,19 @@ func _ready():
 	
 	if G.debug_mode:
 		player_main_light.shadow_enabled = false
-		speed = 500
+		speed.value = 500
 		accel = 20
 
 
 func _process(_delta):
-	if xp >= G.level_thresholds[level] and not G.game_paused:
+	if xp >= SM.level_thresholds[level] and not G.game_paused:
 		should_level_up()
 
 
 func _physics_process(delta):
 	var direction = Input.get_vector("move_left", "move_right", "move_up", "move_down")
 	direction = direction.normalized()
-	velocity = velocity.lerp(direction * speed, accel * delta)
+	velocity = velocity.lerp(direction * speed.value, accel * delta)
 	
 	if direction == Vector2(0,0):
 		animated_sprite_2d.pause()
@@ -86,36 +83,7 @@ func should_level_up():
 	game_manager.pause_game()
 
 	# TODO: choose random items here, but no dupes
-	UI.present_level_up_choices(["movement_speed", "reload_speed", "projectile_speed"])
-
-
-func level_up(upgrade_name):
-	print("levelling: ", upgrade_name)
-	
-	level += 1
-
-	var upgrade_details = G.UPGRADE_OPTIONS[upgrade_name]
-	var next_stat_level = stat_levels[upgrade_name] + 1
-	var upgrade_val = upgrade_details.progression[next_stat_level]
-
-	match upgrade_name:
-		"movement_speed":
-			speed = perform_operation(
-				upgrade_details.type, speed, upgrade_val)
-		"reload_speed":
-			main_weapon.reload_timer.wait_time = perform_operation(
-				upgrade_details.type, main_weapon.reload_timer.wait_time, upgrade_val)
-		"projectile_speed":
-			main_weapon.bullet_speed = perform_operation(
-				upgrade_details.type, main_weapon.bullet_speed, upgrade_val)
-
-	stat_levels[upgrade_name] += 1
-	game_manager.unpause_game()
-
-
-func perform_operation(operation: G.Operation, on, by):
-	match operation:
-		G.Operation.ADD:
-			return on + by
-		G.Operation.MULT_ADD:
-			return on + on * by
+	UI.present_level_up_choices([
+		G.StatType.MOVEMENT_SPEED,
+		G.StatType.RELOAD_SPEED,
+		G.StatType.PROJECTILE_SPEED])

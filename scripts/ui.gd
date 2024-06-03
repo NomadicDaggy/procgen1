@@ -53,9 +53,9 @@ func update_hud():
 	debug.text += "XP: " + str(player.xp) + "\n"
 	debug.text += "LVL: " + str(player.level) + "\n"
 	debug.text += "\n"
-	debug.text += "Movement speed: " + str(player.speed) + "\n"
-	debug.text += "Reload speed: " + str(player.main_weapon.reload_timer.wait_time) + "\n"
-	debug.text += "Projectile speed: " + str(player.main_weapon.bullet_speed) + "\n"
+	debug.text += "Movement speed: " + str(player.speed.value) + "\n"
+	debug.text += "Reload speed: " + str(player.main_weapon.reload_speed.value) + "\n"
+	debug.text += "Projectile speed: " + str(player.main_weapon.projectile_speed.value) + "\n"
 
 
 func set_player_info_text(text):
@@ -77,8 +77,8 @@ func present_level_up_choices(upgrade_names):
 	for upgrade_name in upgrade_names:
 		var upgrade_choice_item = LEVEL_UP_ITEM.instantiate()
 		upgrade_choice_item.init_upgrade_name = upgrade_name
-		var upgrade_details = G.UPGRADE_OPTIONS[upgrade_name]
-		var next_stat_level = player.stat_levels[upgrade_name] + 1
+		var upgrade_details = SM.UPGRADE_DEFAULTS[upgrade_name]
+		var next_stat_level = SM.stat_levels[upgrade_name] + 1
 		upgrade_choice_item.init_header_text = "%s %s" % [upgrade_details.header, G.int_to_roman(next_stat_level)]
 		
 		if upgrade_details.progression.size() == next_stat_level:
