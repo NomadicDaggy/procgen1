@@ -49,7 +49,7 @@ func update_hud():
 
 	debug.text = ""
 	#debug.text =  "Mouse pos:   " + str(world.get_global_mouse_position()) + "\n"
-	#debug.text += "Enemy count: " + str(enemies.get_child_count())
+	debug.text += "Enemy count: %s\n" % str(enemies.get_child_count())
 	debug.text += "XP: " + str(player.xp) + "\n"
 	debug.text += "LVL: " + str(player.level) + "\n"
 	debug.text += "\n"

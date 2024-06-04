@@ -7,6 +7,7 @@ extends Area2D
 
 var direction = Vector2.ZERO
 var bullet_speed: float
+var damage: float
 @export var shooter: CharacterBody2D
 
 func _ready():
@@ -25,7 +26,7 @@ func _physics_process(delta):
 
 func _on_body_entered(body):
 	if body.is_in_group("shootable"):
-		body.shot()
+		body.shot(damage)
 	
 	queue_free()
 

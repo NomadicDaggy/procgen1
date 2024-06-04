@@ -10,6 +10,7 @@ const XP_PICKUP = preload("res://scenes/xp_pickup.tscn")
 @export var speed: int
 @export var acceleration: int
 @export var state: State = State.PATROLLING
+@export var health: float
 
 @onready var navigation_agent: NavigationAgent2D = $Navigation/NavigationAgent2D
 @onready var chase_timer: Timer = $ChaseTimer
@@ -36,6 +37,7 @@ func _ready():
 	
 	name = "ENEMY"
 	z_index = 500
+	health = 100.0
 	debug_text.text = ""
 	patrol_path_timer.wait_time = G.rng.randf_range(1, 2.5)
 	chase_timer.wait_time = 4
@@ -48,23 +50,25 @@ func _ready():
 
 func _physics_process(delta):
 	
-	var overlapping_bodies = player_vision_area.get_overlapping_bodies()
+	var player_bodies_in_area = player_vision_area.get_overlapping_bodies()
 	var detection_adjustment: float
 
-	if overlapping_bodies.size() > 0:
-		var d = overlapping_bodies[0].global_position.distance_to(global_position)
+	if player_bodies_in_area.size() > 0:
+		var d = player_bodies_in_area[0].global_position.distance_to(global_position)
 		var d_percent = 1 - (d / (detection_radius + 10))
 		detection_adjustment = delta * d_percent * 1.2
 	else:
 		if state != State.CHASING:
 			detection_adjustment = -delta
 
-	
 	player_detection_level = clampf(
 		player_detection_level + detection_adjustment,
 		og_player_detection_level,
 		1.0
 	)
+
+	if health <= 0:
+		state = State.DEAD
 	
 	match state:
 		State.CHASING:
@@ -117,6 +121,7 @@ func _process(_delta):
 
 	modulate = Color(player_detection_level, 1, 1)
 	
+	debug_text.text = "%s" % G.round_to_dec(health, 1)
 	#if G.debug_mode:
 	#debug_text.text = "%s\n" % G.round_to_dec(player_detection_level,3)
 	#debug_text.text = "%s\n" % G.round_to_dec(factor,1)
@@ -130,13 +135,12 @@ func move_to(pos, s, a, d):
 	move_and_slide()
 
 
-func shot():
+func shot(damage):
 	var blood_particles = BLOOD.instantiate()
 	add_sibling(blood_particles)
 	blood_particles.global_position = global_position
 	blood_particles.look_at(target.global_position)
-	
-	state = State.DEAD
+	health -= damage
 
 
 func _on_timer_timeout():
