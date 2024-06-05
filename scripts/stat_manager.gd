@@ -30,6 +30,7 @@ const UPGRADE_DEFAULTS = {
 }
 
 @export var stat_levels: Dictionary = {}
+@export var stats_ready = false
 
 var level_thresholds: Dictionary = {}
 
@@ -42,8 +43,19 @@ func _ready():
 		level_thresholds[l] = l * 5
 		#lsum = level_thresholds[l]
 	
-	for stat in SM.UPGRADE_DEFAULTS.keys():
-		stat_levels[stat] = 0
+	clear_stats()
+
+
+func _process(_delta):
+	
+	if stats_ready:
+		return
+	
+	# Check all stats for availability
+	for stat_type in range(0, G.StatType.size()):
+		if get_stat_by_type(stat_type) == null:
+			return
+	stats_ready = true
 
 
 func init_upgradeable_stat(type, value) -> Node:
@@ -54,6 +66,17 @@ func init_upgradeable_stat(type, value) -> Node:
 	SM.add_child(n)
 	return n
 
+
+func clear_stats():
+	stats_ready = false
+
+	for stat in get_children():
+		stat.queue_free()
+	
+	stat_levels = {}
+	for stat in SM.UPGRADE_DEFAULTS.keys():
+		SM.stat_levels[stat] = 0
+	
 
 func level_up_player(stat_type: G.StatType):
 	G.player.level += 1

@@ -57,6 +57,11 @@ func unpause_game():
 	G.game_paused = false
 
 
+func restart_game():
+	SM.clear_stats()
+	get_tree().reload_current_scene()
+
+
 func _on_enemy_spawn_timer_timeout():
 	if enemies.get_child_count() >= max_enemies:
 		return

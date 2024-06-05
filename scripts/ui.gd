@@ -47,6 +47,9 @@ func update_hud():
 	var player_info_offset = Vector2(-50, -100)
 	player_info.position = screen_center + player_info_offset
 
+	if not SM.stats_ready:
+		return
+	
 	debug.text = ""
 	#debug.text =  "Mouse pos:   " + str(world.get_global_mouse_position()) + "\n"
 	debug.text += "Enemy count: %s\n" % str(enemies.get_child_count())
@@ -126,7 +129,7 @@ func _on_restart_button_pressed():
 	if not results_controls.visible:
 		return
 	
-	get_parent().get_tree().reload_current_scene()
+	game_manager.restart_game()
 	
 	results_controls.visible = false
 	player_info.visible = true

@@ -36,11 +36,6 @@ radius = 93.0054
 [node name="Player" type="CharacterBody2D"]
 collision_layer = 194
 script = ExtResource("1_3qs0h")
-accel = null
-xp = null
-level = null
-enemies_killed = null
-dead = null
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 rotation = 1.5708

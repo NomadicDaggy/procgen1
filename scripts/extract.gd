@@ -25,7 +25,7 @@ func _on_body_exited(body):
 		
 	timer.stop()
 	if not G.game_paused:
-		UI.set_player_info_text(str(body.shots_in_mag))
+		UI.set_player_info_text(str(body.main_weapon.shots_in_mag))
 	
 
 func _on_timer_timeout():
