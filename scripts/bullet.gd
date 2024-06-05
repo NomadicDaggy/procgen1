@@ -6,15 +6,15 @@
 extends Area2D
 
 var direction = Vector2.ZERO
-var bullet_speed: float
-var damage: float
 @export var shooter: CharacterBody2D
+
+var stats: = {}
 
 func _ready():
 	z_index = 600
 
 func _physics_process(delta):
-	position += direction * delta * bullet_speed
+	position += direction * delta * stats.bullet_speed
 	
 	# TODO: raycast is immediate, but bullet has flight time.
 	# Either way sometimes this causes enemy to be hit even bullet does not
@@ -26,7 +26,8 @@ func _physics_process(delta):
 
 func _on_body_entered(body):
 	if body.is_in_group("shootable"):
-		body.shot(damage)
+		stats.direction = direction
+		body.shot(stats)
 	
 	queue_free()
 

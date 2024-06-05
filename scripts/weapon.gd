@@ -7,6 +7,7 @@ const BULLET = preload("res://scenes/bullet.tscn")
 @export var round_in_chamber: bool
 @export var projectile_speed: Node
 @export var projectile_damage: float
+@export var projectile_knockback: Node
 @export var reload_speed: Node
 
 @onready var shot_timer = $ShotTimer
@@ -21,6 +22,7 @@ func _ready():
 	projectile_damage = 35.0
 	projectile_speed = SM.init_upgradeable_stat(G.StatType.PROJECTILE_SPEED, 1000.0)
 	reload_speed = SM.init_upgradeable_stat(G.StatType.RELOAD_SPEED, 1.5)
+	projectile_knockback = SM.init_upgradeable_stat(G.StatType.PROJECTILE_KNOCKBACK, 40.0)
 
 	reload_timer.wait_time = reload_speed.value
 	shot_timer.wait_time = 0.2
@@ -53,8 +55,9 @@ func try_shoot(bullet_container, player):
 	bullet.shooter = player
 	bullet.global_position = global_position
 	bullet.direction = (get_global_mouse_position() - global_position).normalized()
-	bullet.bullet_speed = projectile_speed.value
-	bullet.damage = projectile_damage
+	bullet.stats.bullet_speed = projectile_speed.value
+	bullet.stats.damage = projectile_damage
+	bullet.stats.knockback_strength = projectile_knockback.value
 	bullet.rotation = bullet.direction.angle() + PI/2
 	bullet.z_index = 1500
 	bullet_container.add_child(bullet)

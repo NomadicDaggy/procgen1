@@ -21,6 +21,12 @@ const UPGRADE_DEFAULTS = {
 		"progression": [null, 200, 200, 200, 200, 200],
 		"operation": G.Operation.ADD,
 	},
+	G.StatType.PROJECTILE_KNOCKBACK: {
+		"header": "Knockback",
+		"details": "+ X projectile knockback on enemies",
+		"progression": [null, 0.4, 0.4, 0.4, 0.4, 0.4],
+		"operation": G.Operation.MULT_ADD,
+	},
 }
 
 @export var stat_levels: Dictionary = {}

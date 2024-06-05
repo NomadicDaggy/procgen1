@@ -2,7 +2,12 @@ extends Node2D
 
 enum Operation { MULT_ADD, ADD }
 
-enum StatType { MOVEMENT_SPEED, RELOAD_SPEED, PROJECTILE_SPEED }
+enum StatType {
+	MOVEMENT_SPEED,
+	RELOAD_SPEED,
+	PROJECTILE_SPEED,
+	PROJECTILE_KNOCKBACK,
+}
 
 # Tilesize in pixels
 const TS: float = 16.0

@@ -135,12 +135,16 @@ func move_to(pos, s, a, d):
 	move_and_slide()
 
 
-func shot(damage):
+func shot(projectile_stats):
 	var blood_particles = BLOOD.instantiate()
 	add_sibling(blood_particles)
 	blood_particles.global_position = global_position
 	blood_particles.look_at(target.global_position)
-	health -= damage
+	health -= projectile_stats.damage
+	
+	# add impulse from bullet hit
+	#projectile_stats.knockback_strength
+	velocity = Vector2(projectile_stats.direction * projectile_stats.knockback_strength)
 
 
 func _on_timer_timeout():
