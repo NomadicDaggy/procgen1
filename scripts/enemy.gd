@@ -8,6 +8,7 @@ const XP_PICKUP = preload("res://scenes/xp_pickup.tscn")
 @export var target: Node2D
 
 @export var speed: int
+@export var deceleration: int = 40
 @export var acceleration: int
 @export var state: State = State.PATROLLING
 @export var health: float
@@ -17,7 +18,8 @@ const XP_PICKUP = preload("res://scenes/xp_pickup.tscn")
 @onready var patrol_path_timer: Timer = $PatrolPathTimer
 @onready var debug_text: Label = $DebugText
 @onready var debug_velocity_line: Line2D = $DebugVelocityLine
-@onready var player_vision_area = $PlayerVisionArea
+@onready var player_vision_area: Area2D = $PlayerVisionArea
+@onready var got_hit_timer: Timer = $GotHitTimer
 
 
 @onready var patrol_margin: float = G.rng.randf_range(0 * G.TS, 5 * G.TS)
@@ -84,6 +86,7 @@ func _physics_process(delta):
 				move_to((patrol_target - global_position), patrol_speed, patrol_accel, delta)
 
 		State.IDLE:
+			velocity = velocity.move_toward(Vector2.ZERO, deceleration * delta)
 			move_and_slide()
 
 		State.DEAD:
@@ -121,11 +124,11 @@ func _process(_delta):
 
 	modulate = Color(player_detection_level, 1, 1)
 	
-	debug_text.text = "%s" % G.round_to_dec(health, 1)
+	debug_text.text = "%s\n" % G.round_to_dec(health, 1)
 	#if G.debug_mode:
 	#debug_text.text = "%s\n" % G.round_to_dec(player_detection_level,3)
 	#debug_text.text = "%s\n" % G.round_to_dec(factor,1)
-	#debug_text.text = "%s\n" % State.keys()[state]
+	debug_text.text  += "%s\n" % State.keys()[state]
 	#debug_text.text += "%s" % G.round_to_dec(patrol_path_timer.time_left, 1)
 
 
@@ -146,6 +149,12 @@ func shot(projectile_stats):
 	#projectile_stats.knockback_strength
 	velocity = Vector2(projectile_stats.direction * projectile_stats.knockback_strength)
 
+	if state != State.CHASING:
+		got_hit_timer.start()
+		#patrol_path_timer.stop()
+		patrol_target = global_position
+		state = State.PATROLLING
+
 
 func _on_timer_timeout():
 	if state == State.CHASING:
@@ -153,6 +162,7 @@ func _on_timer_timeout():
 		
 func _on_player_vision_area_body_entered(_body):
 	trying_to_find_player_with_ray = true
+
 
 func _on_chase_timer_timeout():
 	state = State.PATROLLING

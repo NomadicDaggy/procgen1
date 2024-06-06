@@ -88,6 +88,9 @@ wait_time = 10.0
 one_shot = true
 autostart = true
 
+[node name="GotHitTimer" type="Timer" parent="."]
+wait_time = 0.1
+
 [node name="DebugText" type="Label" parent="."]
 offset_left = -58.0
 offset_top = -66.0
@@ -104,6 +107,9 @@ visible = false
 width = 0.5
 default_color = Color(1, 1, 1, 0.729412)
 end_cap_mode = 1
+
+[node name="DebugCamera" type="Camera2D" parent="."]
+zoom = Vector2(2.085, 2.085)
 
 [connection signal="timeout" from="Navigation/Timer" to="." method="_on_timer_timeout"]
 [connection signal="self_destruct" from="Killzone" to="." method="_on_killzone_self_destruct"]

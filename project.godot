@@ -33,9 +33,10 @@ shader_language/size/initial_position_type=2
 
 [display]
 
-window/size/viewport_width=1440
+window/size/viewport_width=1600
 window/size/viewport_height=1000
-window/size/initial_position_type=2
+window/size/initial_position_type=0
+window/size/initial_position=Vector2i(1500, 0)
 
 [filesystem]
 
