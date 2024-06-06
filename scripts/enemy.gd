@@ -21,12 +21,12 @@ const XP_PICKUP = preload("res://scenes/xp_pickup.tscn")
 @onready var player_vision_area: Area2D = $PlayerVisionArea
 @onready var got_hit_timer: Timer = $GotHitTimer
 
-
-@onready var patrol_margin: float = G.rng.randf_range(0 * G.TS, 5 * G.TS)
-@onready var patrol_speed: float = G.rng.randi_range(10, 50)
-@onready var patrol_accel: float = G.rng.randi_range(2, 4)
-@onready var chase_speed: float = clampf(patrol_speed * G.rng.randf_range(1.5, 5.0), 80, 150)
-@onready var chase_accel: float = clampf(patrol_accel * G.rng.randf_range(1.5, 5.0), 3, 6)
+var patrol_margin: float
+var patrol_speed: float
+var patrol_accel: float
+var chase_speed: float
+var chase_accel: float
+# @onready var unpredictability: float = G.rng.randf_range(0.5, 1.5)
 
 var patrol_target: Vector2
 var player_detection_level: float
@@ -48,6 +48,8 @@ func _ready():
 
 	detection_radius = 140.0  # pixels
 	player_vision_area.get_child(0).shape.radius = detection_radius
+
+	_randomize_behaviour()
 
 
 func _physics_process(delta):
@@ -86,7 +88,10 @@ func _physics_process(delta):
 				move_to((patrol_target - global_position), patrol_speed, patrol_accel, delta)
 
 		State.IDLE:
-			velocity = velocity.move_toward(Vector2.ZERO, deceleration * delta)
+			var decel_adjusted = deceleration
+			if not got_hit_timer.is_stopped():
+				decel_adjusted *= 2
+			velocity = velocity.move_toward(Vector2.ZERO, decel_adjusted * delta)
 			move_and_slide()
 
 		State.DEAD:
@@ -156,6 +161,14 @@ func shot(projectile_stats):
 		state = State.PATROLLING
 
 
+func _randomize_behaviour():
+	patrol_margin = G.rng.randf_range(3 * G.TS, 15 * G.TS)
+	patrol_speed = G.rng.randi_range(10, 50)
+	patrol_accel = G.rng.randi_range(2, 4)
+	chase_speed = clampf(patrol_speed * G.rng.randf_range(1.5, 5.0), 80, 150)
+	chase_accel = clampf(patrol_accel * G.rng.randf_range(1.5, 5.0), 3, 6)
+
+
 func _on_timer_timeout():
 	if state == State.CHASING:
 		navigation_agent.target_position = target.global_position
@@ -172,6 +185,8 @@ func _on_chase_timer_timeout():
 
 
 func _on_patrol_path_timer_timeout():
+	_randomize_behaviour()
+
 	var px = position.x
 	var py = position.y
 	

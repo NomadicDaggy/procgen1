@@ -37,6 +37,7 @@ collision_layer = 100
 collision_mask = 33
 motion_mode = 1
 slide_on_ceiling = false
+wall_min_slide_angle = 0.352556
 floor_block_on_wall = false
 script = ExtResource("1_habw5")
 

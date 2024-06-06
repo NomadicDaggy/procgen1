@@ -49,8 +49,8 @@ func update_hud():
 
 	if not SM.stats_ready:
 		return
-	
-	debug.text = ""
+
+	debug.text = "FPS: %d\n\n" % Engine.get_frames_per_second()
 	#debug.text =  "Mouse pos:   " + str(world.get_global_mouse_position()) + "\n"
 	debug.text += "Enemy count: %s\n" % str(enemies.get_child_count())
 	debug.text += "XP: " + str(player.xp) + "\n"
