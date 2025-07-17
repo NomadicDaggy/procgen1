@@ -1,10 +1,10 @@
 [gd_scene load_steps=11 format=3 uid="uid://bg8vu4vo2pjsk"]
 
 [ext_resource type="Texture2D" uid="uid://x6fee8su30kj" path="res://assets/ts1.png" id="1_5lnke"]
-[ext_resource type="Script" path="res://scripts/game_manager.gd" id="1_uo411"]
-[ext_resource type="Script" path="res://scripts/map.gd" id="2_6xld6"]
+[ext_resource type="Script" uid="uid://dq4odsbr5dolb" path="res://scripts/game_manager.gd" id="1_uo411"]
+[ext_resource type="Script" uid="uid://j7yhx3mlobux" path="res://scripts/map.gd" id="2_6xld6"]
 [ext_resource type="PackedScene" uid="uid://cbjk1vccn32a4" path="res://scenes/player.tscn" id="3_m2xfy"]
-[ext_resource type="Script" path="res://scripts/freecam.gd" id="7_kml0k"]
+[ext_resource type="Script" uid="uid://duxwjchxcef25" path="res://scripts/freecam.gd" id="7_kml0k"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_ktfvu"]
 outlines = Array[PackedVector2Array]([PackedVector2Array(-26426, -16115, 29510, -16403, 29222, 13645, -25786, 12845)])
@@ -17,46 +17,20 @@ polygon = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_mpvrb"]
 texture = ExtResource("1_5lnke")
 0:0/0 = 0
-0:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
-0:0/0/physics_layer_0/angular_velocity = 0.0
 1:0/0 = 0
-1:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
-1:0/0/physics_layer_0/angular_velocity = 0.0
 2:0/0 = 0
-2:0/0/occlusion_layer_0/polygon = SubResource("OccluderPolygon2D_uoijl")
-2:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
-2:0/0/physics_layer_0/angular_velocity = 0.0
+2:0/0/occlusion_layer_0/polygon_0/polygon = SubResource("OccluderPolygon2D_uoijl")
 2:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 3:0/0 = 0
-3:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
-3:0/0/physics_layer_0/angular_velocity = 0.0
 0:1/0 = 0
-0:1/0/physics_layer_0/linear_velocity = Vector2(0, 0)
-0:1/0/physics_layer_0/angular_velocity = 0.0
 1:1/0 = 0
-1:1/0/physics_layer_0/linear_velocity = Vector2(0, 0)
-1:1/0/physics_layer_0/angular_velocity = 0.0
 2:1/0 = 0
-2:1/0/physics_layer_0/linear_velocity = Vector2(0, 0)
-2:1/0/physics_layer_0/angular_velocity = 0.0
 3:1/0 = 0
-3:1/0/physics_layer_0/linear_velocity = Vector2(0, 0)
-3:1/0/physics_layer_0/angular_velocity = 0.0
 0:2/0 = 0
-0:2/0/physics_layer_0/linear_velocity = Vector2(0, 0)
-0:2/0/physics_layer_0/angular_velocity = 0.0
 1:2/0 = 0
-1:2/0/physics_layer_0/linear_velocity = Vector2(0, 0)
-1:2/0/physics_layer_0/angular_velocity = 0.0
 2:2/0 = 0
-2:2/0/physics_layer_0/linear_velocity = Vector2(0, 0)
-2:2/0/physics_layer_0/angular_velocity = 0.0
 3:2/0 = 0
-3:2/0/physics_layer_0/linear_velocity = Vector2(0, 0)
-3:2/0/physics_layer_0/angular_velocity = 0.0
 0:3/0 = 0
-0:3/0/physics_layer_0/linear_velocity = Vector2(0, 0)
-0:3/0/physics_layer_0/angular_velocity = 0.0
 
 [sub_resource type="TileSet" id="TileSet_glrd7"]
 occlusion_layer_0/light_mask = 1
@@ -84,7 +58,6 @@ layer_0/name = "mid"
 layer_0/modulate = Color(0.188235, 0.247059, 0.552941, 1)
 layer_0/z_index = 1000
 layer_1/name = "background"
-layer_1/tile_data = PackedInt32Array()
 script = ExtResource("2_6xld6")
 navigation_region = NodePath("..")
 

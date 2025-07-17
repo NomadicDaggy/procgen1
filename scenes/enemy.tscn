@@ -1,6 +1,6 @@
 [gd_scene load_steps=10 format=3 uid="uid://cnvaqhi8co16a"]
 
-[ext_resource type="Script" path="res://scripts/enemy.gd" id="1_habw5"]
+[ext_resource type="Script" uid="uid://bc3b0y7fqevxy" path="res://scripts/enemy.gd" id="1_habw5"]
 [ext_resource type="Texture2D" uid="uid://cyga8hpi63heo" path="res://assets/enemy.png" id="1_ugilk"]
 [ext_resource type="PackedScene" uid="uid://7y0qcpweo22u" path="res://scenes/killzone.tscn" id="2_mx8rb"]
 [ext_resource type="FontFile" uid="uid://dmhp7vho1grrx" path="res://assets/FiraMono-Medium.ttf" id="4_jpyb8"]
